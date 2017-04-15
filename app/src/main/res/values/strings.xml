@@ -5,4 +5,8 @@
     <string name="title_events">Eventos</string>
     <string name="title_groups">Grupos</string>
     <string name="title_calendar">Calendario</string>
+    <string name="twitter_consumer_key" translatable="false">hIBqoPIAiMNg1LpvSiEDwzGaC</string>
+    <string name="twitter_consumer_secret" translatable="false">uUW7osdi01DG64TtCWyQY6hLKrmvB8VJ7n3gLf7j3d4ToLuHIz</string>
+    <string name="facebook_application_id" translatable="false">1779580009022377</string>
+    <string name="facebook_login_protocol_scheme" translatable="false">fb1779580009022377</string>
 </resources>
