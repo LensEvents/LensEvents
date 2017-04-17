@@ -35,11 +35,12 @@ dependencies {
     compile 'com.firebaseui:firebase-ui-auth:1.1.1'
     compile 'com.google.android.gms:play-services-auth:10.0.1'
     compile 'com.android.support:support-v4:25.3.1'
+    compile 'com.github.gabrielemariotti.cards:cardslib-core:2.1.0'
+    compile 'com.github.gabrielemariotti.cards:cardslib-cards:2.1.0'
+    compile 'com.github.gabrielemariotti.cards:cardslib-recyclerview:2.1.0'
+    compile 'com.github.gabrielemariotti.cards:cardslib-extra-staggeredgrid:2.1.0'
+    compile 'com.github.gabrielemariotti.cards:cardslib-extra-dragdrop:2.1.0'
     testCompile 'junit:junit:4.12'
 }
-
-
-
-
 
 apply plugin: 'com.google.gms.google-services'
