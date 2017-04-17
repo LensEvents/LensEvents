@@ -16,35 +16,10 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Arrays;
 
-public class MainActivity extends AppCompatActivity implements HomeFragment.OnFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener, HomeFragment.OnFragmentInteractionListener {
 
     private static final int RC_SIGN_IN = 123;
     private HomeFragment homeFragment;
-
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
-
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            switch (item.getItemId()) {
-                case R.id.navigation_home:
-                    transaction.replace(R.id.content_frament_to_replace, homeFragment);
-                    transaction.commit();
-                    return true;
-                case R.id.navigation_events:
-                    transaction.replace(R.id.content_frament_to_replace, new Fragment());
-                    transaction.commit();
-                    return true;
-                case R.id.navigation_groups:
-                    return true;
-                case R.id.navigation_calendar:
-                    return true;
-            }
-            return false;
-        }
-
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,11 +45,31 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnFr
         }
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        navigation.setOnNavigationItemSelectedListener(this);
     }
 
     @Override
     public void onFragmentInteraction(Uri uri) {
 
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        switch (item.getItemId()) {
+            case R.id.navigation_home:
+                transaction.replace(R.id.content_frament_to_replace, homeFragment);
+                transaction.commit();
+                return true;
+            case R.id.navigation_events:
+                transaction.replace(R.id.content_frament_to_replace, new Fragment());
+                transaction.commit();
+                return true;
+            case R.id.navigation_groups:
+                return true;
+            case R.id.navigation_calendar:
+                return true;
+        }
+        return false;
     }
 }
