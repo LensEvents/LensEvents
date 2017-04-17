@@ -1,8 +1,12 @@
 package me.lensevents.lensevents;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -12,27 +16,29 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Arrays;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements HomeFragment.OnFragmentInteractionListener {
 
-    private TextView mTextMessage;
     private static final int RC_SIGN_IN = 123;
+    private HomeFragment homeFragment;
+
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    mTextMessage.setText(R.string.title_home);
+                    transaction.replace(R.id.content_frament_to_replace, homeFragment);
+                    transaction.commit();
                     return true;
                 case R.id.navigation_events:
-                    mTextMessage.setText(R.string.title_events);
+                    transaction.replace(R.id.content_frament_to_replace, new Fragment());
+                    transaction.commit();
                     return true;
                 case R.id.navigation_groups:
-                    mTextMessage.setText(R.string.title_groups);
                     return true;
                 case R.id.navigation_calendar:
-                    mTextMessage.setText(R.string.title_calendar);
                     return true;
             }
             return false;
@@ -44,6 +50,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        homeFragment = new HomeFragment();
+        transaction.replace(R.id.content_frament_to_replace, homeFragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
         if (auth.getCurrentUser() == null) {
@@ -57,9 +69,12 @@ public class MainActivity extends AppCompatActivity {
                     RC_SIGN_IN);
         }
 
-        mTextMessage = (TextView) findViewById(R.id.message);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
 
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
+    }
 }

@@ -9,4 +9,7 @@
     <string name="twitter_consumer_secret" translatable="false">uUW7osdi01DG64TtCWyQY6hLKrmvB8VJ7n3gLf7j3d4ToLuHIz</string>
     <string name="facebook_application_id" translatable="false">1779580009022377</string>
     <string name="facebook_login_protocol_scheme" translatable="false">fb1779580009022377</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
