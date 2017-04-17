@@ -29,7 +29,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         homeFragment = new HomeFragment();
         transaction.replace(R.id.content_frament_to_replace, homeFragment);
-        transaction.addToBackStack(null);
         transaction.commit();
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
