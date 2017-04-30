@@ -11,36 +11,29 @@
     android:layout_marginRight="@dimen/md_keylines"
     android:foreground="?attr/selectableItemBackground">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <ImageView
             android:id="@+id/group_image"
             android:layout_width="match_parent"
             android:layout_height="@dimen/card_image_height"
             android:scaleType="centerCrop"
-            tools:src="@drawable/a" />
+            tools:src="@drawable/default_image" />
 
         <TextView
             android:id="@+id/group_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/group_image"
             android:elevation="0dp"
+            android:paddingBottom="@dimen/md_keylines"
             android:paddingLeft="@dimen/md_keylines"
-            android:text="Teeest"
+            android:paddingTop="@dimen/md_keylines"
+            android:text="Default"
             android:textAppearance="@style/TextAppearance.AppCompat.Title"
-            android:textColor="@color/authui_inputTextColor" />
+            android:textColor="@color/colorPrimary" />
 
-        <Button
-            android:id="@+id/action_button"
-            style="?android:attr/borderlessButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/group_image"
-            android:text="Action"
-            android:textColor="?attr/colorPrimary" />
-
-    </RelativeLayout>
+    </LinearLayout>
 </android.support.v7.widget.CardView>

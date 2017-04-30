@@ -2,10 +2,11 @@ package me.lensevents.model;
 
 import com.google.firebase.auth.FirebaseUser;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
 
-public class Group {
+public class Group implements Serializable{
 
     private String name;
     private String description;
