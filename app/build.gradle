@@ -40,7 +40,10 @@ dependencies {
     compile 'com.github.gabrielemariotti.cards:cardslib-recyclerview:2.1.0'
     compile 'com.github.gabrielemariotti.cards:cardslib-extra-staggeredgrid:2.1.0'
     compile 'com.github.gabrielemariotti.cards:cardslib-extra-dragdrop:2.1.0'
+    compile 'com.android.support:recyclerview-v7:25.3.1'
     testCompile 'junit:junit:4.12'
 }
+
+
 
 apply plugin: 'com.google.gms.google-services'
