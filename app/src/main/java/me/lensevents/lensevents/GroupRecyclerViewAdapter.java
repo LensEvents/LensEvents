@@ -123,7 +123,7 @@ public class GroupRecyclerViewAdapter extends RecyclerView.Adapter<GroupRecycler
         public ViewHolder(View itemView) {
             super(itemView);
             mView = itemView;
-            imageView = (ImageView) itemView.findViewById(R.id.group_image);
+            imageView = (ImageView) itemView.findViewById(R.id.user_image);
             nameView = (TextView) itemView.findViewById(R.id.group_name);
         }
     }

@@ -26,7 +26,7 @@ import me.lensevents.model.Category;
 import me.lensevents.model.Group;
 import me.lensevents.model.User;
 
-public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener, HomeFragment.OnFragmentInteractionListener, CategoryFragment.OnListFragmentInteractionListener, GroupFragment.OnListFragmentInteractionListener, GroupDetailsFragment.OnFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener, HomeFragment.OnFragmentInteractionListener, CategoryFragment.OnListFragmentInteractionListener, GroupFragment.OnListFragmentInteractionListener, GroupDetailsFragment.OnFragmentInteractionListener, UserFragment.OnListFragmentInteractionListener {
 
     private static final int RC_SIGN_IN = 123;
     private HomeFragment homeFragment;
@@ -152,6 +152,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         transaction.replace(R.id.content_frament_to_replace, groupDetailsFragment);
         transaction.addToBackStack(null);
         transaction.commit();
-        Toast.makeText(getApplicationContext(), item.getName(), Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onListFragmentInteraction(User user) {
     }
 }

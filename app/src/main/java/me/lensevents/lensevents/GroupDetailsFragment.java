@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -51,7 +52,7 @@ public class GroupDetailsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_group_details, container, false);
-        ImageView mImage = (ImageView) view.findViewById(R.id.group_image);
+        ImageView mImage = (ImageView) view.findViewById(R.id.user_image);
         TextView mName = (TextView) view.findViewById(R.id.group_name);
         TextView mCategory = (TextView) view.findViewById(R.id.group_category);
         TextView mDescription = (TextView) view.findViewById(R.id.group_description);
@@ -92,6 +93,10 @@ public class GroupDetailsFragment extends Fragment {
             mAccessCode.setVisibility(View.VISIBLE);
             mAccessCode.setText(group.getAccessCode());
         }
+
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.replace(R.id.content_frament_user_to_replace, UserFragment.newInstance("administrators"));//TODO: Customizar con opción para modificar la consulta
+        transaction.commit();
         return view;
     }
 

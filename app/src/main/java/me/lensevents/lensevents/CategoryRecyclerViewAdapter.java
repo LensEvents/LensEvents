@@ -66,8 +66,8 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<CategoryRe
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mImageView = (ImageView) view.findViewById(R.id.group_image);
-            mNameView = (TextView) view.findViewById(R.id.card_name);
+            mImageView = (ImageView) view.findViewById(R.id.user_image);
+            mNameView = (TextView) view.findViewById(R.id.user_name);
         }
 
         @Override
