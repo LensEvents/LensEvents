@@ -12,8 +12,8 @@ import android.view.ViewGroup;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
+import me.lensevents.dto.GroupDto;
 import me.lensevents.model.Category;
-import me.lensevents.model.Group;
 
 public class GroupFragment extends Fragment {
 
@@ -82,6 +82,6 @@ public class GroupFragment extends Fragment {
     }
 
     public interface OnListFragmentInteractionListener {
-        void onListFragmentInteraction(Group item);
+        void onListFragmentInteraction(GroupDto item);
     }
 }

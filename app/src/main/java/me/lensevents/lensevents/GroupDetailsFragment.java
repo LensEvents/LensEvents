@@ -17,12 +17,13 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import me.lensevents.dto.GroupDto;
 import me.lensevents.model.Group;
 
 public class GroupDetailsFragment extends Fragment {
 
     private static final String GROUP = "group";
-    private Group group;
+    private GroupDto group;
 
     private OnFragmentInteractionListener mListener;
 
@@ -30,7 +31,7 @@ public class GroupDetailsFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static GroupDetailsFragment newInstance(Group group) {
+    public static GroupDetailsFragment newInstance(GroupDto group) {
         GroupDetailsFragment fragment = new GroupDetailsFragment();
         Bundle args = new Bundle();
         args.putSerializable(GROUP, group);
@@ -42,7 +43,7 @@ public class GroupDetailsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            group = (Group) getArguments().getSerializable(GROUP);
+            group = (GroupDto) getArguments().getSerializable(GROUP);
         }
     }
 

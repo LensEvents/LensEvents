@@ -21,6 +21,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.Arrays;
 
+import me.lensevents.dto.GroupDto;
 import me.lensevents.model.Category;
 import me.lensevents.model.Group;
 import me.lensevents.model.User;
@@ -145,7 +146,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     }
 
     @Override
-    public void onListFragmentInteraction(Group item) {
+    public void onListFragmentInteraction(GroupDto item) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         GroupDetailsFragment groupDetailsFragment = GroupDetailsFragment.newInstance(item);
         transaction.replace(R.id.content_frament_to_replace, groupDetailsFragment);

@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import me.lensevents.dto.GroupDto;
 import me.lensevents.model.Group;
 
 public class GroupRecyclerViewAdapter extends RecyclerView.Adapter<GroupRecyclerViewAdapter.ViewHolder> {
@@ -29,7 +30,7 @@ public class GroupRecyclerViewAdapter extends RecyclerView.Adapter<GroupRecycler
     private final GroupFragment.OnListFragmentInteractionListener mListener;
 
     private List<String> mGroupsIds = new ArrayList<>();
-    private List<Group> mGroups = new ArrayList<>();
+    private List<GroupDto> mGroups = new ArrayList<>();
 
     public GroupRecyclerViewAdapter(final Context context, Query ref, GroupFragment.OnListFragmentInteractionListener mListener) {
         mContext = context;
@@ -40,17 +41,17 @@ public class GroupRecyclerViewAdapter extends RecyclerView.Adapter<GroupRecycler
 
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Group group = dataSnapshot.getValue(Group.class);
+                GroupDto groupDto = dataSnapshot.getValue(GroupDto.class);
+                mGroups.add(groupDto);
                 mGroupsIds.add(dataSnapshot.getKey());
-                mGroups.add(group);
                 notifyItemInserted(mGroups.size() - 1);
             }
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                Group group = dataSnapshot.getValue(Group.class);
+                GroupDto groupDto = dataSnapshot.getValue(GroupDto.class);
                 int index = mGroupsIds.indexOf(dataSnapshot.getKey());
-                mGroups.set(index, group);
+                mGroups.set(index, groupDto);
                 notifyItemChanged(index);
             }
 
@@ -85,7 +86,7 @@ public class GroupRecyclerViewAdapter extends RecyclerView.Adapter<GroupRecycler
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mGroups.get(position);
-        Group group = mGroups.get(position);
+        GroupDto group = mGroups.get(position);
 
         Bitmap image = null;
         RequestForImageTask requestForImageTask = new RequestForImageTask();
@@ -117,7 +118,7 @@ public class GroupRecyclerViewAdapter extends RecyclerView.Adapter<GroupRecycler
         public ImageView imageView;
         public TextView nameView;
         public final View mView;
-        public Group mItem;
+        public GroupDto mItem;
 
         public ViewHolder(View itemView) {
             super(itemView);

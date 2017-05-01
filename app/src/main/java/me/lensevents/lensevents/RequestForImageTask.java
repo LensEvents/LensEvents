@@ -10,15 +10,16 @@ import java.io.IOException;
 import java.net.URL;
 import java.net.URLConnection;
 
+import me.lensevents.dto.GroupDto;
 import me.lensevents.model.Group;
 
 public class RequestForImageTask extends AsyncTask<Object, Void, Bitmap> {
     @Override
     protected Bitmap doInBackground(Object... objects) {
-        Group group = null;
+        GroupDto group = null;
         Bitmap bitmap = null;
-        if (objects[0] instanceof Group) {
-            group = (Group) objects[0];
+        if (objects[0] instanceof GroupDto) {
+            group = (GroupDto) objects[0];
         }
         if (group != null) {
             try {
