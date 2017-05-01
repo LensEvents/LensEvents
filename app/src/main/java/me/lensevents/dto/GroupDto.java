@@ -1,30 +1,32 @@
-package me.lensevents.model;
+package me.lensevents.dto;
 
 import java.io.Serializable;
 import java.util.List;
 
-public class Group implements Serializable{
+import me.lensevents.model.Category;
+
+public class GroupDto implements Serializable{
 
     private String name;
     private String description;
-    private List<User> members;
-    private List<User> administrators;
+    private List<String> members;
+    private List<String> administrators;
     private String photo;
     private List<String> media;
     private Category category;
     private String accessCode;
 
-    public Group() {
+    public GroupDto() {
     }
 
-    public Group(String name, String description, String photo, Category category) {
+    public GroupDto(String name, String description, String photo, Category category) {
         this.name = name;
         this.description = description;
         this.photo = photo;
         this.category = category;
     }
 
-    public Group(String name, String description, List<User> members, List<User> administrators, String photo, List<String> media, Category category, String accessCode) {
+    public GroupDto(String name, String description, List<String> members, List<String> administrators, String photo, List<String> media, Category category, String accessCode) {
         this.name = name;
         this.description = description;
         this.members = members;
@@ -51,19 +53,19 @@ public class Group implements Serializable{
         this.description = description;
     }
 
-    public List<User> getMembers() {
+    public List<String> getMembers() {
         return members;
     }
 
-    public void setMembers(List<User> members) {
+    public void setMembers(List<String> members) {
         this.members = members;
     }
 
-    public List<User> getAdministrators() {
+    public List<String> getAdministrators() {
         return administrators;
     }
 
-    public void setAdministrators(List<User> administrators) {
+    public void setAdministrators(List<String> administrators) {
         this.administrators = administrators;
     }
 
@@ -104,7 +106,7 @@ public class Group implements Serializable{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Group group = (Group) o;
+        GroupDto group = (GroupDto) o;
 
         if (name != null ? !name.equals(group.name) : group.name != null) return false;
         if (description != null ? !description.equals(group.description) : group.description != null)
