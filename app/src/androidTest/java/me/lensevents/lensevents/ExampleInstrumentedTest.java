@@ -4,19 +4,10 @@ import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import me.lensevents.utilities.PopulateDatabase;
-
-import static org.junit.Assert.*;
 
 import static org.junit.Assert.assertEquals;
 

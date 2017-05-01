@@ -10,14 +10,16 @@ import java.util.List;
 
 import me.lensevents.dto.EventDto;
 import me.lensevents.dto.EventMessageDto;
+import me.lensevents.dto.GroupDto;
 import me.lensevents.model.Category;
-import me.lensevents.model.Group;
 import me.lensevents.model.Location;
+import me.lensevents.model.User;
 
 public class PopulateDatabase {
 
     public static void main(String[] args) {
         //PopulateDatabase.createEvents();
+        //PopulateDatabase.createUsers();
         PopulateDatabase.createGroups();
     }
 
@@ -93,11 +95,58 @@ public class PopulateDatabase {
 
     }
 
+    public static void createUsers() {
+
+        List<User> userList = new ArrayList<>();
+
+        User user = new User();
+        user.setUid("uid1");
+        user.setDisplayName("Javier Bonilla");
+        user.setPhotoUrl("http://pbs.twimg.com/profile_images/820073293478854656/dA2_6WI9_normal.jpg");
+        user.setEmail("jeffavy.74@gmail.com");
+        userList.add(user);
+
+        User user2 = new User();
+        user2.setUid("uid2");
+        user2.setDisplayName("Danié Moreno");
+        user2.setPhotoUrl("https://lh3.googleusercontent.com/-lZXJodk_UzM/AAAAAAAAAAI/AAAAAAAAFmk/iRXOEFRL69I/s96-c/photo.jpg");
+        user2.setEmail("danielmoreno@gmail.com");
+        userList.add(user2);
+
+        User user3 = new User();
+        user3.setUid("uid3");
+        user3.setDisplayName("Gitano de Pueblo");
+        user3.setPhotoUrl("https://pbs.twimg.com/profile_images/426737413034348545/AvYpXpN9_400x400.jpeg");
+        user3.setEmail("gitanodelreino@gmail.com");
+        userList.add(user3);
+
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference = firebaseDatabase.getReference("Users");
+        for (User e : userList) {
+            databaseReference.push().setValue(e);
+        }
+    }
+
     public static void createGroups() {
 
-        List<Group> groupList = new ArrayList<>();
+        List<GroupDto> groupList = new ArrayList<>();
+        final List<String> admins = new ArrayList<>();
+        final List<String> members = new ArrayList<>();
+        final List<String> admins2 = new ArrayList<>();
+        final List<String> members2 = new ArrayList<>();
 
-        Group group1 = new Group();
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+
+        admins.add("uid1");
+        admins2.add("uid2");
+        members.add("uid1");
+        members.add("uid3");
+        members2.add("uid2");
+        members2.add("uid3");
+
+        GroupDto group1 = new GroupDto();
+        group1.setAdministrators(admins);
+        group1.setMembers(members);
         group1.setPhoto("https://www.knewton.com/wp-content/uploads/George-meetup.jpg");
         group1.setName("Amantes del vino en Sevilla");
         group1.setCategory(Category.COMIDA_Y_BEBIDA);
@@ -105,16 +154,18 @@ public class PopulateDatabase {
         group1.setDescription("Esto es un grupo de prueba");
         groupList.add(group1);
 
-        Group group2 = new Group();
+
+        GroupDto group2 = new GroupDto();
+        group2.setAdministrators(admins2);
+        group2.setMembers(members2);
         group2.setPhoto("http://6798-presscdn-0-89.pagely.netdna-cdn.com/wp-content/uploads/2015/09/FranceMeetup.jpeg");
         group2.setName("Fines de semana en parquest");
         group2.setCategory(Category.NATURALEZA_Y_AVENTURA);
         group2.setDescription("Esto es un grupo de prueba");
         groupList.add(group2);
 
-        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         DatabaseReference databaseReference = firebaseDatabase.getReference("Groups");
-        for (Group e : groupList) {
+        for (GroupDto e : groupList) {
             databaseReference.push().setValue(e);
         }
 
