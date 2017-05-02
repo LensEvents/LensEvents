@@ -24,7 +24,9 @@ import me.lensevents.model.Group;
 public class GroupDetailsFragment extends Fragment {
 
     private static final String GROUP = "group";
+    private static final String KEY = "key";
     private GroupDto group;
+    private String key;
 
     private OnFragmentInteractionListener mListener;
 
@@ -32,10 +34,11 @@ public class GroupDetailsFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static GroupDetailsFragment newInstance(GroupDto group) {
+    public static GroupDetailsFragment newInstance(GroupDto group, String key) {
         GroupDetailsFragment fragment = new GroupDetailsFragment();
         Bundle args = new Bundle();
         args.putSerializable(GROUP, group);
+        args.putString(KEY, key);
         fragment.setArguments(args);
         return fragment;
     }
@@ -45,6 +48,7 @@ public class GroupDetailsFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             group = (GroupDto) getArguments().getSerializable(GROUP);
+            key = getArguments().getString(KEY);
         }
     }
 
@@ -95,7 +99,7 @@ public class GroupDetailsFragment extends Fragment {
         }
 
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.content_frament_user_to_replace, UserFragment.newInstance("administrators"));//TODO: Customizar con opción para modificar la consulta
+        transaction.replace(R.id.content_frament_user_to_replace, UserFragment.newInstance("administrators", group, key));//TODO: Customizar con opción para modificar la consulta
         transaction.commit();
         return view;
     }

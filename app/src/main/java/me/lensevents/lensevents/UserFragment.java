@@ -12,13 +12,18 @@ import android.view.ViewGroup;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
+import me.lensevents.dto.GroupDto;
 import me.lensevents.model.User;
 
 public class UserFragment extends Fragment {
 
     private OnListFragmentInteractionListener mListener;
     public static String MODE = "mode";
+    public static String GROUP = "group";
+    public static String KEY = "key";
     private String mode;
+    private String key;
+    private GroupDto groupDto;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -27,10 +32,12 @@ public class UserFragment extends Fragment {
     public UserFragment() {
     }
 
-    public static UserFragment newInstance(String mode) {
+    public static UserFragment newInstance(String mode, GroupDto groupDto, String key) {
         UserFragment fragment = new UserFragment();
         Bundle args = new Bundle();
         args.putString(MODE, mode);
+        args.putSerializable(GROUP, groupDto);
+        args.putString(KEY, key);
         fragment.setArguments(args);
         return fragment;
     }
@@ -41,6 +48,8 @@ public class UserFragment extends Fragment {
 
         if (getArguments() != null) {
             mode = getArguments().getString(MODE);
+            key = getArguments().getString(KEY);
+            groupDto = (GroupDto) getArguments().getSerializable(GROUP);
         }
     }
 
@@ -55,8 +64,7 @@ public class UserFragment extends Fragment {
             RecyclerView recyclerView = (RecyclerView) view;
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
 
-            Query query = FirebaseDatabase.getInstance().getReference().child("Users");//TODO: Hacer en función del modo
-            recyclerView.setAdapter(new UserRecyclerViewAdapter(query, mListener));
+            recyclerView.setAdapter(new UserRecyclerViewAdapter(key, mode, mListener));
         }
         return view;
     }

@@ -87,6 +87,7 @@ public class GroupRecyclerViewAdapter extends RecyclerView.Adapter<GroupRecycler
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mGroups.get(position);
         GroupDto group = mGroups.get(position);
+        final String key = mGroupsIds.get(position);
 
         Bitmap image = null;
         RequestForImageTask requestForImageTask = new RequestForImageTask();
@@ -103,7 +104,7 @@ public class GroupRecyclerViewAdapter extends RecyclerView.Adapter<GroupRecycler
             @Override
             public void onClick(View v) {
                 if (null != mListener) {
-                    mListener.onListFragmentInteraction(holder.mItem);
+                    mListener.onListFragmentInteraction(holder.mItem, key);
                 }
             }
         });

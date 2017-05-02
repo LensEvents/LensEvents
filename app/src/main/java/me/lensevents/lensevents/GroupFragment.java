@@ -82,6 +82,6 @@ public class GroupFragment extends Fragment {
     }
 
     public interface OnListFragmentInteractionListener {
-        void onListFragmentInteraction(GroupDto item);
+        void onListFragmentInteraction(GroupDto item, String key);
     }
 }

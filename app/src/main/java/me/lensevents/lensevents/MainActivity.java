@@ -146,9 +146,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     }
 
     @Override
-    public void onListFragmentInteraction(GroupDto item) {
+    public void onListFragmentInteraction(GroupDto item, String key) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        GroupDetailsFragment groupDetailsFragment = GroupDetailsFragment.newInstance(item);
+        GroupDetailsFragment groupDetailsFragment = GroupDetailsFragment.newInstance(item, key);
         transaction.replace(R.id.content_frament_to_replace, groupDetailsFragment);
         transaction.addToBackStack(null);
         transaction.commit();

@@ -12,63 +12,121 @@ import android.widget.TextView;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import me.lensevents.dto.GroupDto;
 import me.lensevents.lensevents.UserFragment.OnListFragmentInteractionListener;
+import me.lensevents.model.Group;
 import me.lensevents.model.User;
 
 public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerViewAdapter.ViewHolder> {
 
-    private Query query;
     private final OnListFragmentInteractionListener mListener;
+    private String key;
+    private String mode;
 
     private List<String> mUsersIds = new ArrayList<>();
     private List<User> mUsers = new ArrayList<>();
 
-    public UserRecyclerViewAdapter(Query query, OnListFragmentInteractionListener listener) {
-        this.query = query;
+    public UserRecyclerViewAdapter(final String key, final String mode, OnListFragmentInteractionListener listener) {
         mListener = listener;
+        this.key = key;
+        this.mode = mode;
 
-        ChildEventListener valueEventListener = new ChildEventListener() {
+        requestForGroup();
 
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                User user = dataSnapshot.getValue(User.class);
-                mUsersIds.add(dataSnapshot.getKey());
-                mUsers.add(user);
-                notifyItemInserted(mUsers.size() - 1);
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                User user = dataSnapshot.getValue(User.class);
-                int index = mUsersIds.indexOf(dataSnapshot.getKey());
-                mUsers.set(index, user);
-                notifyItemChanged(index);
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-                int index = mUsersIds.indexOf(dataSnapshot.getKey());
-                mUsers.remove(index);
-                mUsersIds.remove(index);
-                notifyItemRemoved(index);
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        };
-        this.query.addChildEventListener(valueEventListener);
     }
+
+    public void requestForGroup() {
+        FirebaseDatabase.getInstance().getReference("Groups").orderByKey().equalTo(key) //TODO: Modificar
+                .addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                        applyUserListener(dataSnapshot);
+                    }
+
+                    @Override
+                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                        mUsers.clear();
+                        mUsersIds.clear();
+                        notifyDataSetChanged();
+                        applyUserListener(dataSnapshot);
+                    }
+
+                    @Override
+                    public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                    }
+
+                    @Override
+                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+    }
+
+    public void applyUserListener(DataSnapshot dataSnapshot) {
+        GroupDto groupDto = dataSnapshot.getValue(GroupDto.class);
+        Query query;
+        if (mode == "administrators") {
+            for (String uid : groupDto.getAdministrators()) {
+                query = FirebaseDatabase.getInstance().getReference().child("Users").orderByChild("uid").equalTo(uid);
+                query.addChildEventListener(userEventListener);
+            }
+        } else if (mode == "members") {
+            query = FirebaseDatabase.getInstance().getReference().child("Users");
+        }
+    }
+
+    final ChildEventListener userEventListener = new ChildEventListener() {
+
+        @Override
+        public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+            User user = dataSnapshot.getValue(User.class);
+            mUsersIds.add(dataSnapshot.getKey());
+            mUsers.add(user);
+            notifyItemInserted(mUsers.size() - 1);
+        }
+
+        @Override
+        public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+            User user = dataSnapshot.getValue(User.class);
+            int index = mUsersIds.indexOf(dataSnapshot.getKey());
+            mUsers.set(index, user);
+            notifyItemChanged(index);
+        }
+
+        @Override
+        public void onChildRemoved(DataSnapshot dataSnapshot) {
+            int index = mUsersIds.indexOf(dataSnapshot.getKey());
+            mUsers.remove(index);
+            mUsersIds.remove(index);
+            notifyItemRemoved(index);
+        }
+
+        @Override
+        public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+        }
+
+        @Override
+        public void onCancelled(DatabaseError databaseError) {
+        }
+    };
+
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
