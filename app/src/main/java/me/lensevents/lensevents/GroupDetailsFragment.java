@@ -14,6 +14,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -63,6 +65,7 @@ public class GroupDetailsFragment extends Fragment {
         TextView mNumberUsers = (TextView) view.findViewById(R.id.group_number_users);
         TextView mViewUsers = (Button) view.findViewById(R.id.group_viewUsers_button);
         TextView mAccessCode = (TextView) view.findViewById(R.id.group_access_code);
+        TextView mAdministratorsTitle = (TextView) view.findViewById(R.id.group_administrators_title);
 
         RequestForImageTask requestForImageTask = new RequestForImageTask();
         Bitmap image = null;
@@ -89,18 +92,25 @@ public class GroupDetailsFragment extends Fragment {
         mViewUsers.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO: Reemplazar fragmento por listado de usuarios relacionados
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.content_frament_to_replace, UserFragment.newInstance("members", group, key));
+                transaction.addToBackStack(null);
+                transaction.commit();
             }
         });
-        if (group.getAccessCode() != null) {
-            //TODO: Comprobar que el usuario sea administrador
-            mAccessCode.setVisibility(View.VISIBLE);
-            mAccessCode.setText(group.getAccessCode());
+
+        //If the user is an administrator
+        if (group.getAdministrators().contains(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+            if (group.getAccessCode() != null) {
+                mAccessCode.setVisibility(View.VISIBLE);
+                mAccessCode.setText(group.getAccessCode());
+            }
+            mAdministratorsTitle.setVisibility(View.VISIBLE);
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.replace(R.id.content_frament_user_to_replace, UserFragment.newInstance("administrators", group, key));
+            transaction.commit();
         }
 
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.content_frament_user_to_replace, UserFragment.newInstance("administrators", group, key));//TODO: Customizar con opción para modificar la consulta
-        transaction.commit();
         return view;
     }
 

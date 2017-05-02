@@ -10,9 +10,8 @@
     <string name="facebook_application_id" translatable="false">1779580009022377</string>
     <string name="facebook_login_protocol_scheme" translatable="false">fb1779580009022377</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="members">miembros</string>
     <string name="group_view_media">Ver información multimedia</string>
     <string name="group_view_users">Ver usuarios</string>
+    <string name="administrators">Administradores</string>
 </resources>

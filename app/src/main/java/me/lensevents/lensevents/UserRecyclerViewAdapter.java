@@ -47,7 +47,7 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
     }
 
     public void requestForGroup() {
-        FirebaseDatabase.getInstance().getReference("Groups").orderByKey().equalTo(key) //TODO: Modificar
+        FirebaseDatabase.getInstance().getReference("Groups").orderByKey().equalTo(key)
                 .addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -88,7 +88,10 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
                 query.addChildEventListener(userEventListener);
             }
         } else if (mode == "members") {
-            query = FirebaseDatabase.getInstance().getReference().child("Users");
+            for (String uid : groupDto.getMembers()) {
+                query = FirebaseDatabase.getInstance().getReference().child("Users").orderByChild("uid").equalTo(uid);
+                query.addChildEventListener(userEventListener);
+            }
         }
     }
 

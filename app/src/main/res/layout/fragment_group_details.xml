@@ -96,6 +96,19 @@
                 android:text="@string/group_view_media"
                 android:textColor="?attr/colorPrimary" />
 
+            <TextView
+                android:id="@+id/group_administrators_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/md_keylines"
+                android:paddingEnd="@dimen/md_keylines"
+                android:paddingStart="@dimen/md_keylines"
+                android:paddingTop="@dimen/md_keylines"
+                android:text="@string/administrators"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                android:textColor="@color/colorPrimary"
+                android:textSize="16sp"
+                android:visibility="gone" />
 
             <include
                 android:id="@+id/group_admins"
