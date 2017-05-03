@@ -5,11 +5,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
@@ -23,15 +21,16 @@ import java.util.Arrays;
 
 import me.lensevents.dto.GroupDto;
 import me.lensevents.model.Category;
-import me.lensevents.model.Group;
+import me.lensevents.model.Event;
 import me.lensevents.model.User;
 
-public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener, HomeFragment.OnFragmentInteractionListener, CategoryFragment.OnListFragmentInteractionListener, GroupFragment.OnListFragmentInteractionListener, GroupDetailsFragment.OnFragmentInteractionListener, UserFragment.OnListFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener, HomeFragment.OnFragmentInteractionListener, CategoryFragment.OnListFragmentInteractionListener, GroupFragment.OnListFragmentInteractionListener, GroupDetailsFragment.OnFragmentInteractionListener, UserFragment.OnListFragmentInteractionListener, EventFragment.OnFragmentInteractionListener {
 
     private static final int RC_SIGN_IN = 123;
     private HomeFragment homeFragment;
     private CategoryFragment categoryFragment;
     private GroupFragment groupFragment;
+    private EventFragment eventFragment;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -90,6 +89,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         homeFragment = new HomeFragment();
         categoryFragment = new CategoryFragment();
+        eventFragment = new EventFragment();
         transaction.replace(R.id.content_frament_to_replace, homeFragment);
         transaction.commit();
 
@@ -122,7 +122,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 transaction.commit();
                 return true;
             case R.id.navigation_events:
-                transaction.replace(R.id.content_frament_to_replace, new Fragment());
+                transaction.replace(R.id.content_frament_to_replace, eventFragment);
                 transaction.commit();
                 return true;
             case R.id.navigation_groups:
@@ -152,6 +152,12 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         transaction.replace(R.id.content_frament_to_replace, groupDetailsFragment);
         transaction.addToBackStack(null);
         transaction.commit();
+    }
+
+
+    @Override
+    public void onFragmentInteraction(Event event) {
+
     }
 
     @Override

@@ -1,29 +1,26 @@
 package me.lensevents.model;
 
-import com.google.firebase.auth.FirebaseUser;
-
-import java.util.Calendar;
+import java.io.Serializable;
 import java.util.List;
-import java.util.Set;
 
-public class Event {
+public class Event implements Serializable {
 
     private String name;
-    private Calendar date;
-    private Set<String> tags;
+    private String date;
+    private List<String> tags;
     private String description;
     private Location location;
     private Boolean isPrivate;
-    private Set<FirebaseUser> administrators;
-    private Set<FirebaseUser> assistants;
+    private List<String> administrators;
+    private List<String> assistants;
     private String photo;
-    private Calendar confirmationDate;
+    private String confirmationDate;
     private List<EventMessage> eventMessages;
 
     public Event() {
     }
 
-    public Event(String name, Calendar date, Set<String> tags, String description, Location location) {
+    public Event(String name, String date, List<String> tags, String description, Location location) {
         this.name = name;
         this.date = date;
         this.tags = tags;
@@ -31,9 +28,9 @@ public class Event {
         this.location = location;
     }
 
-    public Event(String name, Calendar date, Set<String> tags, String description,
-                 Location location, Boolean isPrivate, Set<FirebaseUser> administrators, Set<FirebaseUser> assistants,
-                 String photo, Calendar confirmationDate, List<EventMessage> eventMessages) {
+    public Event(String name, String date, List<String> tags, String description,
+                 Location location, Boolean isPrivate, List<String> administrators, List<String> assistants,
+                 String photo, String confirmationDate, List<EventMessage> eventMessages) {
         this.name = name;
         this.date = date;
         this.tags = tags;
@@ -55,19 +52,19 @@ public class Event {
         this.name = name;
     }
 
-    public Calendar getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Calendar date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
-    public Set<String> getTags() {
+    public List<String> getTags() {
         return tags;
     }
 
-    public void setTags(Set<String> tags) {
+    public void setTags(List<String> tags) {
         this.tags = tags;
     }
 
@@ -95,19 +92,19 @@ public class Event {
         isPrivate = aPrivate;
     }
 
-    public Set<FirebaseUser> getAdministrators() {
+    public List<String> getAdministrators() {
         return administrators;
     }
 
-    public void setAdministrators(Set<FirebaseUser> administrators) {
+    public void setAdministrators(List<String> administrators) {
         this.administrators = administrators;
     }
 
-    public Set<FirebaseUser> getAssistants() {
+    public List<String> getAssistants() {
         return assistants;
     }
 
-    public void setAssistants(Set<FirebaseUser> assistants) {
+    public void setAssistants(List<String> assistants) {
         this.assistants = assistants;
     }
 
@@ -119,11 +116,11 @@ public class Event {
         this.photo = photo;
     }
 
-    public Calendar getConfirmationDate() {
+    public String getConfirmationDate() {
         return confirmationDate;
     }
 
-    public void setConfirmationDate(Calendar confirmationDate) {
+    public void setConfirmationDate(String confirmationDate) {
         this.confirmationDate = confirmationDate;
     }
 

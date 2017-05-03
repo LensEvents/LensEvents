@@ -1,13 +1,11 @@
 package me.lensevents.dto;
 
-import com.google.firebase.auth.FirebaseUser;
-
+import java.io.Serializable;
 import java.util.List;
 
-import me.lensevents.model.EventMessage;
 import me.lensevents.model.Location;
 
-public class EventDto {
+public class EventDto implements Serializable {
 
     private String name;
     private String date;
@@ -15,8 +13,8 @@ public class EventDto {
     private String description;
     private Location location;
     private Boolean isPrivate;
-    private List<FirebaseUser> administrators;
-    private List<FirebaseUser> assistants;
+    private List<String> administrators;
+    private List<String> assistants;
     private String photo;
     private String confirmationDate;
     private List<EventMessageDto> eventMessages;
@@ -33,7 +31,7 @@ public class EventDto {
     }
 
     public EventDto(String name, String date, List<String> tags, String description,
-                    Location location, Boolean isPrivate, List<FirebaseUser> administrators, List<FirebaseUser> assistants,
+                    Location location, Boolean isPrivate, List<String> administrators, List<String> assistants,
                     String photo, String confirmationDate, List<EventMessageDto> eventMessages) {
         this.name = name;
         this.date = date;
@@ -96,19 +94,19 @@ public class EventDto {
         isPrivate = aPrivate;
     }
 
-    public List<FirebaseUser> getAdministrators() {
+    public List<String> getAdministrators() {
         return administrators;
     }
 
-    public void setAdministrators(List<FirebaseUser> administrators) {
+    public void setAdministrators(List<String> administrators) {
         this.administrators = administrators;
     }
 
-    public List<FirebaseUser> getAssistants() {
+    public List<String> getAssistants() {
         return assistants;
     }
 
-    public void setAssistants(List<FirebaseUser> assistants) {
+    public void setAssistants(List<String> assistants) {
         this.assistants = assistants;
     }
 

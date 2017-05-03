@@ -3,18 +3,16 @@ package me.lensevents.model;
 
 import com.google.firebase.auth.FirebaseUser;
 
-import java.util.Calendar;
-
 public class EventMessage {
 
     private String text;
-    private Calendar date;
+    private String date;
     private FirebaseUser sender;
 
     public EventMessage() {
     }
 
-    public EventMessage(String text, Calendar date, FirebaseUser sender) {
+    public EventMessage(String text, String date, FirebaseUser sender) {
         this.text = text;
         this.date = date;
         this.sender = sender;
@@ -28,11 +26,11 @@ public class EventMessage {
         this.text = text;
     }
 
-    public Calendar getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Calendar date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
