@@ -9,6 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+
 import me.lensevents.model.Event;
 
 
@@ -56,8 +59,9 @@ public class EventFragment extends Fragment {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
+            Query query = FirebaseDatabase.getInstance().getReference("Events").orderByChild("date");
 
-            EventRecyclerViewAdapter eventRecyclerViewAdapter = new EventRecyclerViewAdapter(mListener);
+            EventRecyclerViewAdapter eventRecyclerViewAdapter = new EventRecyclerViewAdapter(query, mListener);
             recyclerView.setAdapter(eventRecyclerViewAdapter);
         }
 

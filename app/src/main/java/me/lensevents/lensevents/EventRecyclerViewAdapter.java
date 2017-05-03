@@ -14,6 +14,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,16 +25,16 @@ import me.lensevents.model.Event;
 
 public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecyclerViewAdapter.ViewHolder> {
 
-    private DatabaseReference mDatabaseReference;
+    private Query mDatabaseReference;
     private ChildEventListener mValueEventListener;
     private final OnFragmentInteractionListener mListener;
 
     private List<Event> mEvents = new ArrayList<>();
     private List<String> mEventsIds = new ArrayList<>();
 
-    public EventRecyclerViewAdapter(OnFragmentInteractionListener listener) {
+    public EventRecyclerViewAdapter(Query query, OnFragmentInteractionListener listener) {
         mListener = listener;
-        mDatabaseReference = FirebaseDatabase.getInstance().getReference("Events");
+        mDatabaseReference = query;
         ChildEventListener childEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
