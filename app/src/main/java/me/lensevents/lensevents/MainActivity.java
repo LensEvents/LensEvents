@@ -26,7 +26,7 @@ import me.lensevents.model.Category;
 import me.lensevents.model.Group;
 import me.lensevents.model.User;
 
-public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener, HomeFragment.OnFragmentInteractionListener, CategoryFragment.OnListFragmentInteractionListener, GroupFragment.OnListFragmentInteractionListener, GroupDetailsFragment.OnFragmentInteractionListener, UserFragment.OnListFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener, HomeFragment.OnFragmentInteractionListener, CategoryFragment.OnListFragmentInteractionListener, GroupFragment.OnListFragmentInteractionListener, GroupDetailsFragment.OnFragmentInteractionListener, UserFragment.OnListFragmentInteractionListener, CreateGroupFragment.OnFragmentInteractionListener {
 
     private static final int RC_SIGN_IN = 123;
     private HomeFragment homeFragment;
