@@ -89,12 +89,14 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
         Bitmap bitmap = null;
         RequestForImageTask requestForImageTask = new RequestForImageTask();
         try {
-            bitmap = requestForImageTask.execute(event.getPhoto()).get();
+            bitmap = requestForImageTask.execute(event).get();
         } catch (InterruptedException | ExecutionException e) {
             Log.getStackTraceString(e);
         }
 
         holder.mImageView.setImageBitmap(bitmap);
+        holder.mLocationView.setText(event.getLocation().getCountry() + ", " + event.getLocation().getProvince());
+        holder.mDateView.setText(event.getDate());
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -116,6 +118,8 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
         public final View mView;
         public final ImageView mImageView;
         public final TextView mNameView;
+        public final TextView mLocationView;
+        public final TextView mDateView;
         public Event mEvent;
 
         public ViewHolder(View view) {
@@ -123,6 +127,8 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
             mView = view;
             mImageView = (ImageView) view.findViewById(R.id.event_image);
             mNameView = (TextView) view.findViewById(R.id.event_name);
+            mLocationView = (TextView) view.findViewById(R.id.event_location);
+            mDateView = (TextView) view.findViewById(R.id.event_date);
         }
 
         @Override

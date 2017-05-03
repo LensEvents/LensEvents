@@ -61,7 +61,7 @@ public class EventFragment extends Fragment {
             recyclerView.setAdapter(eventRecyclerViewAdapter);
         }
 
-        return inflater.inflate(R.layout.fragment_event_list, container, false);
+        return view;
     }
 
     @Override
