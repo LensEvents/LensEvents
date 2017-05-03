@@ -4,8 +4,10 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.util.ArrayMap;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,9 +17,19 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
 import me.lensevents.dto.GroupDto;
@@ -29,6 +41,7 @@ public class GroupDetailsFragment extends Fragment {
     private static final String KEY = "key";
     private GroupDto group;
     private String key;
+    private FirebaseUser principal;
 
     private OnFragmentInteractionListener mListener;
 
@@ -52,6 +65,7 @@ public class GroupDetailsFragment extends Fragment {
             group = (GroupDto) getArguments().getSerializable(GROUP);
             key = getArguments().getString(KEY);
         }
+        principal = FirebaseAuth.getInstance().getCurrentUser();
     }
 
     @Override
@@ -62,10 +76,12 @@ public class GroupDetailsFragment extends Fragment {
         TextView mName = (TextView) view.findViewById(R.id.group_name);
         TextView mCategory = (TextView) view.findViewById(R.id.group_category);
         TextView mDescription = (TextView) view.findViewById(R.id.group_description);
-        TextView mNumberUsers = (TextView) view.findViewById(R.id.group_number_users);
-        TextView mViewUsers = (Button) view.findViewById(R.id.group_viewUsers_button);
+        final TextView mNumberUsers = (TextView) view.findViewById(R.id.group_number_users);
+        final TextView mViewUsers = (Button) view.findViewById(R.id.group_viewUsers_button);
         TextView mAccessCode = (TextView) view.findViewById(R.id.group_access_code);
         TextView mAdministratorsTitle = (TextView) view.findViewById(R.id.group_administrators_title);
+        final FloatingActionButton mJoinButton = (FloatingActionButton) view.findViewById(R.id.group_join);
+        //TODO: Botón para ir a la información multimedia
 
         RequestForImageTask requestForImageTask = new RequestForImageTask();
         Bitmap image = null;
@@ -100,7 +116,7 @@ public class GroupDetailsFragment extends Fragment {
         });
 
         //If the user is an administrator
-        if (group.getAdministrators().contains(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+        if (group.getAdministrators().contains(principal.getUid())) {
             if (group.getAccessCode() != null) {
                 mAccessCode.setVisibility(View.VISIBLE);
                 mAccessCode.setText(group.getAccessCode());
@@ -109,6 +125,35 @@ public class GroupDetailsFragment extends Fragment {
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
             transaction.replace(R.id.content_frament_user_to_replace, UserFragment.newInstance("administrators", group, key));
             transaction.commit();
+        }
+
+        if (!group.getMembers().contains(principal.getUid())) {
+            mJoinButton.setVisibility(View.VISIBLE);
+            mJoinButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    final DatabaseReference query = FirebaseDatabase.getInstance().getReference().child("Groups").child(key)/*.child("members")*/;
+                    query.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            GroupDto groupDto = dataSnapshot.getValue(GroupDto.class);
+                            List<String> members = groupDto.getMembers();
+                            members.add(principal.getUid());
+                            Map<String, Object> map = new ArrayMap<>();
+                            map.put("members", members);
+                            query.updateChildren(map);
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                        }
+                    });
+                    mJoinButton.setVisibility(View.GONE);
+                    Integer number = Integer.valueOf(mNumberUsers.getText().toString().split(" ")[0]);
+                    number = number + 1;
+                    mNumberUsers.setText(number.toString() + " " + getString(R.string.members));
+                }
+            });
         }
 
         return view;
