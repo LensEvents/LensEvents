@@ -2,7 +2,9 @@ package me.lensevents.lensevents;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -50,16 +52,27 @@ public class GroupFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_group_list, container, false);
 
-        if (view instanceof RecyclerView) {
-            Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
-            recyclerView.setLayoutManager(new LinearLayoutManager(context));
 
-            Query query = FirebaseDatabase.getInstance().getReference().child("Groups").orderByChild("category").equalTo(category.toString());
+        Context context = view.getContext();
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.list2);
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
 
-            GroupRecyclerViewAdapter groupRecyclerViewAdapter = new GroupRecyclerViewAdapter(getContext(), query, mListener);
-            recyclerView.setAdapter(groupRecyclerViewAdapter);
-        }
+        Query query = FirebaseDatabase.getInstance().getReference().child("Groups").orderByChild("category").equalTo(category.toString());
+
+        GroupRecyclerViewAdapter groupRecyclerViewAdapter = new GroupRecyclerViewAdapter(getContext(), query, mListener);
+        recyclerView.setAdapter(groupRecyclerViewAdapter);
+
+        FloatingActionButton mAddGroup = (FloatingActionButton) view.findViewById(R.id.add_group);
+        mAddGroup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.content_frament_to_replace, CreateGroupFragment.newInstance(category));
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
+        });
+
         return view;
     }
 

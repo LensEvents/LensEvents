@@ -129,31 +129,33 @@ public class GroupDetailsFragment extends Fragment {
 
         if (!group.getMembers().contains(principal.getUid())) {
             mJoinButton.setVisibility(View.VISIBLE);
-            mJoinButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    final DatabaseReference query = FirebaseDatabase.getInstance().getReference().child("Groups").child(key)/*.child("members")*/;
-                    query.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            GroupDto groupDto = dataSnapshot.getValue(GroupDto.class);
-                            List<String> members = groupDto.getMembers();
-                            members.add(principal.getUid());
-                            Map<String, Object> map = new ArrayMap<>();
-                            map.put("members", members);
-                            query.updateChildren(map);
-                        }
+            if (group.getAccessCode() == null) {
+                mJoinButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        final DatabaseReference query = FirebaseDatabase.getInstance().getReference().child("Groups").child(key)/*.child("members")*/;
+                        query.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                GroupDto groupDto = dataSnapshot.getValue(GroupDto.class);
+                                List<String> members = groupDto.getMembers();
+                                members.add(principal.getUid());
+                                Map<String, Object> map = new ArrayMap<>();
+                                map.put("members", members);
+                                query.updateChildren(map);
+                            }
 
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-                        }
-                    });
-                    mJoinButton.setVisibility(View.GONE);
-                    Integer number = Integer.valueOf(mNumberUsers.getText().toString().split(" ")[0]);
-                    number = number + 1;
-                    mNumberUsers.setText(number.toString() + " " + getString(R.string.members));
-                }
-            });
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+                            }
+                        });
+                        mJoinButton.setVisibility(View.GONE);
+                        Integer number = Integer.valueOf(mNumberUsers.getText().toString().split(" ")[0]);
+                        number = number + 1;
+                        mNumberUsers.setText(number.toString() + " " + getString(R.string.members));
+                    }
+                });
+            } //TODO: Add else and handle private groups
         }
 
         return view;
