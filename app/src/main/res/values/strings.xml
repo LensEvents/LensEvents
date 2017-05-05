@@ -25,4 +25,5 @@
     <string name="private_group">Privado</string>
     <string name="create">Crear</string>
     <string name="next_events">Próximos eventos</string>
+    <string name="group_join">Unirse</string>
 </resources>

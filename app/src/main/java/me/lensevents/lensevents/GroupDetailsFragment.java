@@ -81,7 +81,7 @@ public class GroupDetailsFragment extends Fragment {
         TextView mAccessCode = (TextView) view.findViewById(R.id.group_access_code);
         TextView mAdministratorsTitle = (TextView) view.findViewById(R.id.group_administrators_title);
         View mGroupsAdmins = view.findViewById(R.id.group_admins);
-        final FloatingActionButton mJoinButton = (FloatingActionButton) view.findViewById(R.id.group_join);
+        final Button mJoinButton = (Button) view.findViewById(R.id.group_join);
         //TODO: Botón para ir a la información multimedia
 
         RequestForImageTask requestForImageTask = new RequestForImageTask();

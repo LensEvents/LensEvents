@@ -76,6 +76,16 @@
                     android:layout_height="wrap_content"
                     android:text="@string/group_view_users"
                     android:textColor="?attr/colorPrimary" />
+
+                <Button
+                    android:id="@+id/group_join"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/group_join"
+                    android:textColor="?attr/colorPrimary"
+                    android:visibility="gone" />
+
             </LinearLayout>
 
             <TextView
@@ -140,16 +150,4 @@
                 android:layout_weight="1" />
         </LinearLayout>
     </ScrollView>
-
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/group_join"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="16dp"
-        android:visibility="gone"
-        app:backgroundTint="@color/authui_colorPrimaryDark"
-        app:srcCompat="@drawable/ic_add_white_24dp" />
-
 </FrameLayout>
