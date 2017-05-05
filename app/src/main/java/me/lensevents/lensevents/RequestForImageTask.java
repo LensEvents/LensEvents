@@ -11,6 +11,7 @@ import java.net.URL;
 import java.net.URLConnection;
 
 import me.lensevents.dto.GroupDto;
+import me.lensevents.model.Event;
 import me.lensevents.model.Group;
 import me.lensevents.model.User;
 
@@ -19,17 +20,22 @@ public class RequestForImageTask extends AsyncTask<Object, Void, Bitmap> {
     protected Bitmap doInBackground(Object... objects) {
         GroupDto group = null;
         User user = null;
+        Event event = null;
         Bitmap bitmap = null;
         if (objects[0] instanceof GroupDto) {
             group = (GroupDto) objects[0];
         } else if (objects[0] instanceof User) {
             user = (User) objects[0];
+        } else if (objects[0] instanceof Event){
+            event = (Event) objects[0];
         }
         String url = null;
         if (group != null) {
             url = group.getPhoto();
         } else if (user != null) {
             url = user.getPhotoUrl();
+        } else if (event != null){
+            url = event.getPhoto();
         }
         try {
             URLConnection connection = new URL(url).openConnection();
