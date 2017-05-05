@@ -80,6 +80,7 @@ public class GroupDetailsFragment extends Fragment {
         final TextView mViewUsers = (Button) view.findViewById(R.id.group_viewUsers_button);
         TextView mAccessCode = (TextView) view.findViewById(R.id.group_access_code);
         TextView mAdministratorsTitle = (TextView) view.findViewById(R.id.group_administrators_title);
+        View mGroupsAdmins = view.findViewById(R.id.group_admins);
         final FloatingActionButton mJoinButton = (FloatingActionButton) view.findViewById(R.id.group_join);
         //TODO: Botón para ir a la información multimedia
 
@@ -122,6 +123,7 @@ public class GroupDetailsFragment extends Fragment {
                 mAccessCode.setText(group.getAccessCode());
             }
             mAdministratorsTitle.setVisibility(View.VISIBLE);
+            mGroupsAdmins.setVisibility(View.VISIBLE);
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
             transaction.replace(R.id.content_frament_user_to_replace, UserFragment.newInstance("administrators", group, key));
             transaction.commit();
@@ -156,6 +158,13 @@ public class GroupDetailsFragment extends Fragment {
                     }
                 });
             } //TODO: Add else and handle private groups
+
+
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            EventFragment eventFragment = EventFragment.newInstance(key);
+            transaction.replace(R.id.content_frament_event_to_replace, eventFragment);
+            transaction.commit();
+
         }
 
         return view;

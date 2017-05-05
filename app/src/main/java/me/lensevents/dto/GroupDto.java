@@ -16,6 +16,8 @@ public class GroupDto implements Serializable{
     private Category category;
     private String accessCode;
 
+    private List<String> events;
+
     public GroupDto() {
     }
 
@@ -99,6 +101,14 @@ public class GroupDto implements Serializable{
 
     public void setAccessCode(String accessCode) {
         this.accessCode = accessCode;
+    }
+
+    public List<String> getEvents() {
+        return events;
+    }
+
+    public void setEvents(List<String> events) {
+        this.events = events;
     }
 
     @Override

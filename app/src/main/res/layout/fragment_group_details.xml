@@ -113,15 +113,28 @@
 
             <include
                 android:id="@+id/group_admins"
-                layout="@layout/fragment_group_list"
+                layout="@layout/fragment_user_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:visibility="gone" />
 
+            <TextView
+                android:id="@+id/group_events_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/md_keylines"
+                android:paddingEnd="@dimen/md_keylines"
+                android:paddingStart="@dimen/md_keylines"
+                android:paddingTop="@dimen/md_keylines"
+                android:text="@string/next_events"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                android:textColor="@color/colorPrimary"
+                android:textSize="16sp" />
+
             <include
                 android:id="@+id/group_events"
-                layout="@layout/fragment_user_content"
+                layout="@layout/fragment_event_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1" />

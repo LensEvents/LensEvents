@@ -26,17 +26,19 @@ import me.lensevents.model.Event;
 public class EventFragment extends Fragment {
 
     private static final String ARG_COLUMN_COUNT = "column-count";
+    private static final String KEY = "key";
     private int mColumnCount = 1;
+    private String key;
     private OnFragmentInteractionListener mListener;
 
     public EventFragment() {
         // Required empty public constructor
     }
 
-    public static EventFragment newInstance(int columnCount) {
+    public static EventFragment newInstance(String key) {
         EventFragment fragment = new EventFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
+        args.putString(KEY, key);
         fragment.setArguments(args);
         return fragment;
     }
@@ -46,6 +48,7 @@ public class EventFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
+            key = getArguments().getString(KEY);
         }
     }
 
@@ -59,9 +62,8 @@ public class EventFragment extends Fragment {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            Query query = FirebaseDatabase.getInstance().getReference("Events").orderByChild("date");
 
-            EventRecyclerViewAdapter eventRecyclerViewAdapter = new EventRecyclerViewAdapter(query, mListener);
+            EventRecyclerViewAdapter eventRecyclerViewAdapter = new EventRecyclerViewAdapter(key, mListener);
             recyclerView.setAdapter(eventRecyclerViewAdapter);
         }
 

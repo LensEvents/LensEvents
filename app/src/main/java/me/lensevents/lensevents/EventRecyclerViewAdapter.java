@@ -16,63 +16,158 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import me.lensevents.dto.GroupDto;
 import me.lensevents.lensevents.EventFragment.OnFragmentInteractionListener;
 import me.lensevents.model.Event;
 
 public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecyclerViewAdapter.ViewHolder> {
 
     private Query mDatabaseReference;
-    private ChildEventListener mValueEventListener;
     private final OnFragmentInteractionListener mListener;
+    private String key;
 
     private List<Event> mEvents = new ArrayList<>();
     private List<String> mEventsIds = new ArrayList<>();
 
-    public EventRecyclerViewAdapter(Query query, OnFragmentInteractionListener listener) {
+    public EventRecyclerViewAdapter(String key, OnFragmentInteractionListener listener) {
         mListener = listener;
-        mDatabaseReference = query;
-        ChildEventListener childEventListener = new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Event event = dataSnapshot.getValue(Event.class);
+        this.key = key;
+        if (key == null) {
+            mDatabaseReference = FirebaseDatabase.getInstance().getReference("Events").orderByChild("date");
+            mDatabaseReference.addChildEventListener(childEventListener);
+        } else {
+            //TODO: Eventos por grupo
+            requestForGroup();
+        }
+
+
+    }
+
+    public void requestForGroup() {
+        FirebaseDatabase.getInstance().getReference("Groups").orderByKey().equalTo(key)
+                .addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                        applyUserListener(dataSnapshot);
+                    }
+
+                    @Override
+                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                        mEvents.clear();
+                        mEventsIds.clear();
+                        notifyDataSetChanged();
+                        applyUserListener(dataSnapshot);
+                    }
+
+                    @Override
+                    public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                    }
+
+                    @Override
+                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+    }
+
+    public void applyUserListener(DataSnapshot dataSnapshot) {
+        GroupDto groupDto = dataSnapshot.getValue(GroupDto.class);
+        for (String key : groupDto.getEvents()) {
+            mDatabaseReference = FirebaseDatabase.getInstance().getReference().child("Events").orderByKey().equalTo(key);
+            mDatabaseReference.addChildEventListener(childEventListener);
+        }
+    }
+
+    ChildEventListener childEventListener = new ChildEventListener() {
+        @Override
+        public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+            Event event = dataSnapshot.getValue(Event.class);
+            boolean aux = false;
+            if (key != null) {
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                Date eventDate = null;
+                try {
+                    eventDate = formatter.parse(event.getDate());
+                } catch (ParseException e) {
+                    Log.getStackTraceString(e);
+                }
+                Date now = new Date();
+                if (eventDate != null & eventDate.after(now)) {
+                    aux = true;
+                }
+            } else {
+                aux = true;
+            }
+
+            if (aux) {
                 mEventsIds.add(dataSnapshot.getKey());
                 mEvents.add(event);
                 notifyItemInserted(mEvents.size() - 1);
             }
 
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                Event event = dataSnapshot.getValue(Event.class);
+        }
+
+        @Override
+        public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+            Event event = dataSnapshot.getValue(Event.class);
+            if (key == null) {
                 int index = mEventsIds.indexOf(dataSnapshot.getKey());
                 mEvents.set(index, event);
                 notifyItemChanged(index);
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
+            } else {
                 int index = mEventsIds.indexOf(dataSnapshot.getKey());
-                mEvents.remove(index);
-                mEventsIds.remove(index);
-                notifyItemRemoved(index);
+                if (index != -1) {
+                    mEvents.set(index, event);
+                    notifyItemChanged(index);
+                    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                    Date eventDate = null;
+                    try {
+                        eventDate = formatter.parse(event.getDate());
+                    } catch (ParseException e) {
+                        Log.getStackTraceString(e);
+                    }
+                    Date now = new Date();
+                    if (eventDate != null & !eventDate.after(now)) {
+                        mEvents.remove(index);
+                        mEventsIds.remove(index);
+                        notifyItemRemoved(index);
+                    }
+                }
+
             }
+        }
 
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+        @Override
+        public void onChildRemoved(DataSnapshot dataSnapshot) {
+            int index = mEventsIds.indexOf(dataSnapshot.getKey());
+            mEvents.remove(index);
+            mEventsIds.remove(index);
+            notifyItemRemoved(index);
+        }
 
-            }
+        @Override
+        public void onChildMoved(DataSnapshot dataSnapshot, String s) {
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+        }
 
-            }
-        };
-        mDatabaseReference.addChildEventListener(childEventListener);
-        mValueEventListener = childEventListener;
-    }
+        @Override
+        public void onCancelled(DatabaseError databaseError) {
+
+        }
+    };
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

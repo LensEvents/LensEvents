@@ -24,4 +24,5 @@
     <string name="public_group">Público</string>
     <string name="private_group">Privado</string>
     <string name="create">Crear</string>
+    <string name="next_events">Próximos eventos</string>
 </resources>
