@@ -157,7 +157,7 @@ public class CreateGroupFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_CODE) {
-            if (data.getData() != null) {
+            if (data!=null && data.getData() != null) {
                 Uri uri = data.getData();
                 photoAdded = true;
                 Random random = new Random();
