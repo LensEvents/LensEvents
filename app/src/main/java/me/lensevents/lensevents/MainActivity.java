@@ -35,26 +35,31 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
-            FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-            if (firebaseAuth.getCurrentUser() != null) {
-
-                FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-                DatabaseReference databaseReference = firebaseDatabase.getReference("Users");
-                databaseReference.orderByChild("uid").equalTo(firebaseAuth.getCurrentUser().getUid())
-                        .addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                if (!dataSnapshot.hasChildren()) {
-                                    saveUserData();
+            if (requestCode == RC_SIGN_IN) {
+                FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+                if (firebaseAuth.getCurrentUser() != null) {
+                    FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+                    DatabaseReference databaseReference = firebaseDatabase.getReference("Users");
+                    databaseReference.orderByChild("uid").equalTo(firebaseAuth.getCurrentUser().getUid())
+                            .addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    if (!dataSnapshot.hasChildren()) {
+                                        saveUserData();
+                                    }
                                 }
-                            }
 
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
 
-                            }
-                        });
+                                }
+                            });
+                }
             }
+        }
+        if (requestCode == CreateGroupFragment.REQUEST_CODE) {
+            CreateGroupFragment groupFragment = (CreateGroupFragment) getSupportFragmentManager().findFragmentByTag("groupFragment");
+            groupFragment.onActivityResult(requestCode, resultCode, data);
         }
     }
 

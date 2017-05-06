@@ -1,14 +1,15 @@
 package me.lensevents.lensevents;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,16 +17,23 @@ import android.widget.MultiAutoCompleteTextView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 
 import me.lensevents.dto.GroupDto;
@@ -33,6 +41,7 @@ import me.lensevents.model.Category;
 import me.lensevents.model.User;
 
 public class CreateGroupFragment extends Fragment {
+    public static final int REQUEST_CODE = 1;
     private static final String CATEGORY = "category";
     private Category category;
     private OnFragmentInteractionListener mListener;
@@ -45,6 +54,8 @@ public class CreateGroupFragment extends Fragment {
     private MultiAutoCompleteTextView mGroupAdministrators;
     private MultiAutoCompleteTextView mGroupMembers;
     private RadioGroup mGroupRadioButtonGroup;
+    private String photoName;
+    private Boolean photoAdded;
     private Button mGroupButton;
 
     public CreateGroupFragment() {
@@ -72,7 +83,6 @@ public class CreateGroupFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_create_group, container, false);
-
         users = new ArrayList<>();
         usersIds = new ArrayList<>();
         mGroupAdministrators = (MultiAutoCompleteTextView) view.findViewById(R.id.create_group_administrators);
@@ -119,15 +129,50 @@ public class CreateGroupFragment extends Fragment {
         mGroupDescription = (EditText) view.findViewById(R.id.create_group_description);
         mGroupRadioButtonGroup = (RadioGroup) view.findViewById(R.id.create_group_radioButtonGroup);
         mGroupButton = (Button) view.findViewById(R.id.create_group_button);
+        photoAdded = false;
 
         mGroupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                createGroup();
+                if (photoAdded && photoName == null) {
+                    Toast.makeText(getContext(), R.string.must_wait_to_photo, Toast.LENGTH_SHORT).show();
+                } else {
+                    createGroup();
+                }
+
+            }
+        });
+
+        Button button = (Button) view.findViewById(R.id.group_add_photo);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                getActivity().startActivityForResult(Intent.createChooser(intent, "Select Picture"), REQUEST_CODE);
             }
         });
 
         return view;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_CODE) {
+            if (data.getData() != null) {
+                Uri uri = data.getData();
+                photoAdded = true;
+                Random random = new Random();
+                final String generatedName = "IMG-" + Long.toString(random.nextLong());
+                FirebaseStorage.getInstance().getReference(generatedName).putFile(uri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                        photoName = generatedName;
+                    }
+                });
+            }
+        }
     }
 
     private void createGroup() {
@@ -179,6 +224,7 @@ public class CreateGroupFragment extends Fragment {
         Category category1 = Category.valueOf(categories.get(position));
         groupDto.setCategory(category1);
 
+        groupDto.setPhoto(photoName);
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Groups");
         databaseReference.push().setValue(groupDto);
 

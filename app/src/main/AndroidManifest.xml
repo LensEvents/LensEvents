@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="me.lensevents.lensevents">
 
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <application xmlns:tools="http://schemas.android.com/tools"
         tools:replace="android:supportsRtl"
         android:allowBackup="true"
