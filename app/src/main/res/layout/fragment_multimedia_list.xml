@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="me.lensevents.lensevents.MultimediaFragment">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/list_multimedia"
+        android:name="me.lensevents.lensevents.MultimediaFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layoutManager="LinearLayoutManager"
+        tools:context="me.lensevents.lensevents.MultimediaFragment"
+        tools:listitem="@layout/fragment_multimedia" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/add_photo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:visibility="visible"
+        app:backgroundTint="@color/authui_colorPrimaryDark"
+        app:srcCompat="@drawable/ic_add_white_24dp" />
+</android.support.design.widget.CoordinatorLayout>

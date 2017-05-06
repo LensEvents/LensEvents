@@ -30,12 +30,15 @@ public class RequestForImageTask extends AsyncTask<Object, Void, Bitmap> {
         GroupDto group = null;
         User user = null;
         Event event = null;
+        String ref = null;
         if (object instanceof GroupDto) {
             group = (GroupDto) object;
         } else if (object instanceof User) {
             user = (User) object;
         } else if (object instanceof Event) {
             event = (Event) object;
+        } else if (object instanceof String) {
+            ref = (String) object;
         }
         String url = null;
         if (group != null) {
@@ -44,6 +47,8 @@ public class RequestForImageTask extends AsyncTask<Object, Void, Bitmap> {
             url = user.getPhotoUrl();
         } else if (event != null) {
             url = event.getPhoto();
+        } else if (ref != null) {
+            url = ref;
         }
 
         File localFile = null;

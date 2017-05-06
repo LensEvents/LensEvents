@@ -80,7 +80,7 @@ public class GroupDetailsFragment extends Fragment {
         View mGroupsAdmins = view.findViewById(R.id.group_admins);
         final Button mJoinButton = (Button) view.findViewById(R.id.group_join);
         Button mDeleteGroupButton = (Button) view.findViewById(R.id.group_deleteGroup);
-        //TODO: Botón para ir a la información multimedia
+        Button mGroupViewMedia = (Button) view.findViewById(R.id.group_view_media);
 
         RequestForImageTask requestForImageTask = new RequestForImageTask();
         requestForImageTask.execute(group, mImage);
@@ -102,6 +102,16 @@ public class GroupDetailsFragment extends Fragment {
             public void onClick(View view) {
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
                 transaction.replace(R.id.content_frament_to_replace, UserFragment.newInstance("members", group, key));
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
+        });
+
+        mGroupViewMedia.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.content_frament_to_replace, MultimediaFragment.newInstance(group, key));
                 transaction.addToBackStack(null);
                 transaction.commit();
             }
