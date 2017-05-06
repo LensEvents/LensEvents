@@ -124,8 +124,8 @@ public class GroupDetailsFragment extends Fragment {
                 @Override
                 public void onClick(View view) {
                     if (group.getMembers() == null || (group.getMembers() != null && group.getMembers().isEmpty())) {
-                        FirebaseDatabase.getInstance().getReference(key).removeValue();
-//                        getFragmentManager().popBackStack();
+                        FirebaseDatabase.getInstance().getReference("Groups").child(key).removeValue();
+                        getFragmentManager().popBackStack();
                     } else {
                         Toast.makeText(getContext(), R.string.cannot_delete_group, Toast.LENGTH_LONG).show();
                     }
