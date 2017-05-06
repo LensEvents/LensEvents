@@ -111,7 +111,7 @@ public class GroupDetailsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.replace(R.id.content_frament_to_replace, MultimediaFragment.newInstance(group, key));
+                transaction.replace(R.id.content_frament_to_replace, MultimediaFragment.newInstance(group, key), "multimediaFragment");
                 transaction.addToBackStack(null);
                 transaction.commit();
             }
