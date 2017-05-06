@@ -91,13 +91,8 @@ public class GroupRecyclerViewAdapter extends RecyclerView.Adapter<GroupRecycler
 
         Bitmap image = null;
         RequestForImageTask requestForImageTask = new RequestForImageTask();
-        try {
-            image = requestForImageTask.execute(group).get();
-        } catch (InterruptedException | ExecutionException e) {
-            Log.getStackTraceString(e);
-        }
+        requestForImageTask.execute(group, holder.imageView);
 
-        holder.imageView.setImageBitmap(image);
         holder.nameView.setText(group.getName());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {

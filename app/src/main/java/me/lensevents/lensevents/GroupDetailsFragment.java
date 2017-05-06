@@ -2,8 +2,10 @@ package me.lensevents.lensevents;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -16,6 +18,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -24,7 +28,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -72,7 +80,7 @@ public class GroupDetailsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_group_details, container, false);
-        ImageView mImage = (ImageView) view.findViewById(R.id.user_image);
+        final ImageView mImage = (ImageView) view.findViewById(R.id.user_image);
         TextView mName = (TextView) view.findViewById(R.id.group_name);
         TextView mCategory = (TextView) view.findViewById(R.id.group_category);
         TextView mDescription = (TextView) view.findViewById(R.id.group_description);
@@ -85,15 +93,8 @@ public class GroupDetailsFragment extends Fragment {
         //TODO: Botón para ir a la información multimedia
 
         RequestForImageTask requestForImageTask = new RequestForImageTask();
-        Bitmap image = null;
-        try {
-            image = requestForImageTask.execute(group).get();
-        } catch (InterruptedException | ExecutionException e) {
-            Log.getStackTraceString(e);
-        }
-        if (image != null) {
-            mImage.setImageBitmap(image);
-        }
+        requestForImageTask.execute(group, mImage);
+
         mName.setText(group.getName());
         String[] categoriesAsString = getResources().getStringArray(R.array.categoriesAsString);
         List<String> categories = Arrays.asList(getResources().getStringArray(R.array.categories));

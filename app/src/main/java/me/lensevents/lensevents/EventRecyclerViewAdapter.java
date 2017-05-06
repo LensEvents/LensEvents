@@ -183,15 +183,9 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
         Event event = mEvents.get(position);
         holder.mNameView.setText(event.getName());
 
-        Bitmap bitmap = null;
         RequestForImageTask requestForImageTask = new RequestForImageTask();
-        try {
-            bitmap = requestForImageTask.execute(event).get();
-        } catch (InterruptedException | ExecutionException e) {
-            Log.getStackTraceString(e);
-        }
+        requestForImageTask.execute(event, holder.mImageView);
 
-        holder.mImageView.setImageBitmap(bitmap);
         holder.mLocationView.setText(event.getLocation().getCountry() + ", " + event.getLocation().getProvince());
         holder.mDateView.setText(event.getDate());
         holder.mView.setOnClickListener(new View.OnClickListener() {
