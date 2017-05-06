@@ -150,7 +150,6 @@ public class PopulateDatabase {
         group1.setPhoto("https://www.knewton.com/wp-content/uploads/George-meetup.jpg");
         group1.setName("Amantes del vino en Sevilla");
         group1.setCategory(Category.COMIDA_Y_BEBIDA);
-        group1.setAccessCode("98H9H8H983HD8H");
         group1.setDescription("Esto es un grupo de prueba");
         groupList.add(group1);
 

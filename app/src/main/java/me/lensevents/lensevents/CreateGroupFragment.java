@@ -53,7 +53,6 @@ public class CreateGroupFragment extends Fragment {
     private Spinner mGroupCategory;
     private MultiAutoCompleteTextView mGroupAdministrators;
     private MultiAutoCompleteTextView mGroupMembers;
-    private RadioGroup mGroupRadioButtonGroup;
     private String photoName;
     private Boolean photoAdded;
     private Button mGroupButton;
@@ -78,7 +77,6 @@ public class CreateGroupFragment extends Fragment {
         }
     }
 
-    //TODO: Posibilidad de añadir aquí la foto directamente
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -127,7 +125,6 @@ public class CreateGroupFragment extends Fragment {
 
         mGroupName = (EditText) view.findViewById(R.id.create_group_name);
         mGroupDescription = (EditText) view.findViewById(R.id.create_group_description);
-        mGroupRadioButtonGroup = (RadioGroup) view.findViewById(R.id.create_group_radioButtonGroup);
         mGroupButton = (Button) view.findViewById(R.id.create_group_button);
         photoAdded = false;
 
@@ -212,12 +209,6 @@ public class CreateGroupFragment extends Fragment {
         groupDto.setAdministrators(administrators);
         groupDto.setMembers(members);
         groupDto.setMedia(new ArrayList<String>());
-        int id = mGroupRadioButtonGroup.getCheckedRadioButtonId();
-        RadioButton radioButton = (RadioButton) getView().findViewById(id);
-        if (radioButton.getText().toString().equals(getString(R.string.private_group))) {
-            String uuid = UUID.randomUUID().toString();
-            groupDto.setAccessCode(uuid);
-        }
 
         List<String> categories = Arrays.asList(getResources().getStringArray(R.array.categories));
         int position = mGroupCategory.getSelectedItemPosition();

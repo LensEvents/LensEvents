@@ -14,7 +14,6 @@ public class GroupDto implements Serializable{
     private String photo;
     private List<String> media;
     private Category category;
-    private String accessCode;
 
     private List<String> events;
 
@@ -28,7 +27,7 @@ public class GroupDto implements Serializable{
         this.category = category;
     }
 
-    public GroupDto(String name, String description, List<String> members, List<String> administrators, String photo, List<String> media, Category category, String accessCode) {
+    public GroupDto(String name, String description, List<String> members, List<String> administrators, String photo, List<String> media, Category category) {
         this.name = name;
         this.description = description;
         this.members = members;
@@ -36,7 +35,6 @@ public class GroupDto implements Serializable{
         this.photo = photo;
         this.media = media;
         this.category = category;
-        this.accessCode = accessCode;
     }
 
     public String getName() {
@@ -95,14 +93,6 @@ public class GroupDto implements Serializable{
         this.category = category;
     }
 
-    public String getAccessCode() {
-        return accessCode;
-    }
-
-    public void setAccessCode(String accessCode) {
-        this.accessCode = accessCode;
-    }
-
     public List<String> getEvents() {
         return events;
     }
@@ -116,18 +106,19 @@ public class GroupDto implements Serializable{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        GroupDto group = (GroupDto) o;
+        GroupDto groupDto = (GroupDto) o;
 
-        if (name != null ? !name.equals(group.name) : group.name != null) return false;
-        if (description != null ? !description.equals(group.description) : group.description != null)
+        if (name != null ? !name.equals(groupDto.name) : groupDto.name != null) return false;
+        if (description != null ? !description.equals(groupDto.description) : groupDto.description != null)
             return false;
-        if (members != null ? !members.equals(group.members) : group.members != null) return false;
-        if (administrators != null ? !administrators.equals(group.administrators) : group.administrators != null)
+        if (members != null ? !members.equals(groupDto.members) : groupDto.members != null)
             return false;
-        if (photo != null ? !photo.equals(group.photo) : group.photo != null) return false;
-        if (media != null ? !media.equals(group.media) : group.media != null) return false;
-        if (category != group.category) return false;
-        return accessCode != null ? accessCode.equals(group.accessCode) : group.accessCode == null;
+        if (administrators != null ? !administrators.equals(groupDto.administrators) : groupDto.administrators != null)
+            return false;
+        if (photo != null ? !photo.equals(groupDto.photo) : groupDto.photo != null) return false;
+        if (media != null ? !media.equals(groupDto.media) : groupDto.media != null) return false;
+        if (category != groupDto.category) return false;
+        return events != null ? events.equals(groupDto.events) : groupDto.events == null;
 
     }
 
@@ -140,7 +131,7 @@ public class GroupDto implements Serializable{
         result = 31 * result + (photo != null ? photo.hashCode() : 0);
         result = 31 * result + (media != null ? media.hashCode() : 0);
         result = 31 * result + (category != null ? category.hashCode() : 0);
-        result = 31 * result + (accessCode != null ? accessCode.hashCode() : 0);
+        result = 31 * result + (events != null ? events.hashCode() : 0);
         return result;
     }
 }

@@ -119,10 +119,6 @@ public class GroupDetailsFragment extends Fragment {
 
         //If the user is an administrator
         if (group.getAdministrators().contains(principal.getUid())) {
-            if (group.getAccessCode() != null) {
-                mAccessCode.setVisibility(View.VISIBLE);
-                mAccessCode.setText(group.getAccessCode());
-            }
             mAdministratorsTitle.setVisibility(View.VISIBLE);
             mGroupsAdmins.setVisibility(View.VISIBLE);
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
