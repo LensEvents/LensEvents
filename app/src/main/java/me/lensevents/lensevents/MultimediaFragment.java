@@ -118,7 +118,7 @@ public class MultimediaFragment extends Fragment {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 GroupDto groupDto = dataSnapshot.getValue(GroupDto.class);
-                                List<String> media = groupDto.getMembers();
+                                List<String> media = groupDto.getMedia();
                                 if (media == null) {
                                     media = new ArrayList<String>();
                                 }
@@ -126,7 +126,6 @@ public class MultimediaFragment extends Fragment {
                                 Map<String, Object> map = new ArrayMap<>();
                                 map.put("media", media);
                                 query.updateChildren(map);
-                                adapter.notifyItemInserted(adapter.getItemCount() + 1);
                             }
 
                             @Override
