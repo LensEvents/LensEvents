@@ -39,15 +39,15 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/group_category"
-                    android:layout_width="match_parent"
+                <Button
+                    android:id="@+id/group_editGroup"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="8dp"
-                    android:paddingEnd="@dimen/md_keylines"
-                    android:paddingStart="@dimen/md_keylines"
-                    android:paddingTop="8dp"
-                    android:text="Default" />
+                    android:text="@string/edit_group"
+                    android:textColor="@android:color/holo_orange_dark"
+                    android:visibility="gone" />
+
 
                 <Button
                     android:id="@+id/group_deleteGroup"
@@ -58,6 +58,16 @@
                     android:textColor="@android:color/holo_red_dark"
                     android:visibility="gone" />
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/group_category"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="8dp"
+                android:paddingEnd="@dimen/md_keylines"
+                android:paddingStart="@dimen/md_keylines"
+                android:paddingTop="8dp"
+                android:text="Default" />
 
 
             <TextView

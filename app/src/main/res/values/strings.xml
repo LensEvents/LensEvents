@@ -31,4 +31,7 @@
     <string name="group_dissociate">Quitarse</string>
     <string name="delete_group">Borrar grupo</string>
     <string name="cannot_delete_group">No se puede borrar un grupo que tiene miembros</string>
+    <string name="edit_group">Editar grupo</string>
+    <string name="group_edit_photo">Editar foto</string>
+    <string name="edit_group_button">Editar</string>
 </resources>

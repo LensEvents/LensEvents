@@ -58,6 +58,7 @@ public class RequestForImageTask extends AsyncTask<Object, Void, Bitmap> {
             e.printStackTrace();
         }
         final File finalLocalFile = localFile;
+        //TODO: Comprobar que haya foto
         FirebaseStorage.getInstance().getReference(url).getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {

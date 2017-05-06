@@ -80,6 +80,7 @@ public class GroupDetailsFragment extends Fragment {
         View mGroupsAdmins = view.findViewById(R.id.group_admins);
         final Button mJoinButton = (Button) view.findViewById(R.id.group_join);
         Button mDeleteGroupButton = (Button) view.findViewById(R.id.group_deleteGroup);
+        Button mEditGroupButton = (Button) view.findViewById(R.id.group_editGroup);
         Button mGroupViewMedia = (Button) view.findViewById(R.id.group_view_media);
 
         RequestForImageTask requestForImageTask = new RequestForImageTask();
@@ -135,6 +136,18 @@ public class GroupDetailsFragment extends Fragment {
                     } else {
                         Toast.makeText(getContext(), R.string.cannot_delete_group, Toast.LENGTH_LONG).show();
                     }
+                }
+            });
+
+            mEditGroupButton.setVisibility(View.VISIBLE);
+            mEditGroupButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                    EditGroupFragment editGroupFragment = EditGroupFragment.newInstance(key);
+                    transaction.replace(R.id.content_frament_to_replace, editGroupFragment, "editGroupFragment");
+                    transaction.addToBackStack(null);
+                    transaction.commit();
                 }
             });
         }

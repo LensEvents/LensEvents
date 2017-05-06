@@ -5,19 +5,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.Query;
 
-import me.lensevents.dto.GroupDto;
-import me.lensevents.lensevents.MultimediaFragment.OnListFragmentInteractionListener;
-import me.lensevents.lensevents.dummy.DummyContent.DummyItem;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import me.lensevents.lensevents.MultimediaFragment.OnListFragmentInteractionListener;
 
 public class MultimediaRecyclerViewAdapter extends RecyclerView.Adapter<MultimediaRecyclerViewAdapter.ViewHolder> {
 

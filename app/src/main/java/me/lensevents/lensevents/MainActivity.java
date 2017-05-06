@@ -20,12 +20,11 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.Arrays;
 
 import me.lensevents.dto.GroupDto;
-import me.lensevents.lensevents.dummy.DummyContent;
 import me.lensevents.model.Category;
 import me.lensevents.model.Event;
 import me.lensevents.model.User;
 
-public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener, HomeFragment.OnFragmentInteractionListener, CategoryFragment.OnListFragmentInteractionListener, GroupFragment.OnListFragmentInteractionListener, GroupDetailsFragment.OnFragmentInteractionListener, UserFragment.OnListFragmentInteractionListener, CreateGroupFragment.OnFragmentInteractionListener, EventFragment.OnFragmentInteractionListener, MultimediaFragment.OnListFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener, HomeFragment.OnFragmentInteractionListener, CategoryFragment.OnListFragmentInteractionListener, GroupFragment.OnListFragmentInteractionListener, GroupDetailsFragment.OnFragmentInteractionListener, UserFragment.OnListFragmentInteractionListener, CreateGroupFragment.OnFragmentInteractionListener, EventFragment.OnFragmentInteractionListener, MultimediaFragment.OnListFragmentInteractionListener, EditGroupFragment.OnFragmentInteractionListener {
 
     private static final int RC_SIGN_IN = 123;
     private HomeFragment homeFragment;
@@ -63,6 +62,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             groupFragment.onActivityResult(requestCode, resultCode, data);
         } else if (requestCode == MultimediaFragment.REQUEST_CODE) {
             MultimediaFragment groupFragment = (MultimediaFragment) getSupportFragmentManager().findFragmentByTag("multimediaFragment");
+            groupFragment.onActivityResult(requestCode, resultCode, data);
+        } else if (requestCode == EditGroupFragment.REQUEST_CODE) {
+            EditGroupFragment groupFragment = (EditGroupFragment) getSupportFragmentManager().findFragmentByTag("editGroupFragment");
             groupFragment.onActivityResult(requestCode, resultCode, data);
         }
     }
