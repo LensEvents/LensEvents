@@ -1,16 +1,11 @@
 package me.lensevents.lensevents;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.util.ArrayMap;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,30 +13,19 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FileDownloadTask;
-import com.google.firebase.storage.FirebaseStorage;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
-import java.util.concurrent.ExecutionException;
 
 import me.lensevents.dto.GroupDto;
-import me.lensevents.model.Group;
 
 public class GroupDetailsFragment extends Fragment {
 
@@ -50,6 +34,8 @@ public class GroupDetailsFragment extends Fragment {
     private GroupDto group;
     private String key;
     private FirebaseUser principal;
+    private View.OnClickListener joinGroupListener;
+    private View.OnClickListener dissociateGroupListener;
 
     private OnFragmentInteractionListener mListener;
 
@@ -130,43 +116,72 @@ public class GroupDetailsFragment extends Fragment {
             transaction.commit();
         }
 
-        if (!group.getMembers().contains(principal.getUid())) {
-            mJoinButton.setVisibility(View.VISIBLE);
-            if (group.getAccessCode() == null) {
-                mJoinButton.setOnClickListener(new View.OnClickListener() {
+        joinGroupListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mJoinButton.setText(R.string.group_dissociate);
+                mJoinButton.setOnClickListener(dissociateGroupListener);
+                final DatabaseReference query = FirebaseDatabase.getInstance().getReference().child("Groups").child(key)/*.child("members")*/;
+                query.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
-                    public void onClick(View view) {
-                        final DatabaseReference query = FirebaseDatabase.getInstance().getReference().child("Groups").child(key)/*.child("members")*/;
-                        query.addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                GroupDto groupDto = dataSnapshot.getValue(GroupDto.class);
-                                List<String> members = groupDto.getMembers();
-                                members.add(principal.getUid());
-                                Map<String, Object> map = new ArrayMap<>();
-                                map.put("members", members);
-                                query.updateChildren(map);
-                            }
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        GroupDto groupDto = dataSnapshot.getValue(GroupDto.class);
+                        List<String> members = groupDto.getMembers();
+                        members.add(principal.getUid());
+                        Map<String, Object> map = new ArrayMap<>();
+                        map.put("members", members);
+                        query.updateChildren(map);
+                    }
 
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-                            }
-                        });
-                        mJoinButton.setVisibility(View.GONE);
-                        Integer number = Integer.valueOf(mNumberUsers.getText().toString().split(" ")[0]);
-                        number = number + 1;
-                        mNumberUsers.setText(number.toString() + " " + getString(R.string.members));
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
                     }
                 });
-            } //TODO: Add else and handle private groups
+                Integer number = Integer.valueOf(mNumberUsers.getText().toString().split(" ")[0]);
+                number = number + 1;
+                mNumberUsers.setText(number.toString() + " " + getString(R.string.members));
+            }
+        };
 
+        dissociateGroupListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mJoinButton.setText(R.string.group_join);
+                mJoinButton.setOnClickListener(joinGroupListener);
+                final DatabaseReference query = FirebaseDatabase.getInstance().getReference().child("Groups").child(key)/*.child("members")*/;
+                query.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        GroupDto groupDto = dataSnapshot.getValue(GroupDto.class);
+                        List<String> members = groupDto.getMembers();
+                        members.remove(principal.getUid());
+                        Map<String, Object> map = new ArrayMap<>();
+                        map.put("members", members);
+                        query.updateChildren(map);
+                    }
 
-            FragmentTransaction transaction = getFragmentManager().beginTransaction();
-            EventFragment eventFragment = EventFragment.newInstance(key);
-            transaction.replace(R.id.content_frament_event_to_replace, eventFragment);
-            transaction.commit();
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                    }
+                });
+                Integer number = Integer.valueOf(mNumberUsers.getText().toString().split(" ")[0]);
+                number = number - 1;
+                mNumberUsers.setText(number.toString() + " " + getString(R.string.members));
+            }
+        };
 
+        if (!group.getMembers().contains(principal.getUid())) {
+            mJoinButton.setText(R.string.group_join);
+            mJoinButton.setOnClickListener(joinGroupListener);
+        } else {
+            mJoinButton.setText(R.string.group_dissociate);
+            mJoinButton.setOnClickListener(dissociateGroupListener);
         }
+
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        EventFragment eventFragment = EventFragment.newInstance(key);
+        transaction.replace(R.id.content_frament_event_to_replace, eventFragment);
+        transaction.commit();
 
         return view;
     }
