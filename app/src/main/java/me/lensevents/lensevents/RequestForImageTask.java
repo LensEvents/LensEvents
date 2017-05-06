@@ -58,18 +58,22 @@ public class RequestForImageTask extends AsyncTask<Object, Void, Bitmap> {
             e.printStackTrace();
         }
         final File finalLocalFile = localFile;
-        //TODO: Comprobar que haya foto
-        FirebaseStorage.getInstance().getReference(url).getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                Bitmap image = BitmapFactory.decodeFile(String.valueOf(finalLocalFile));
-                mImage.setImageBitmap(image);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-            }
-        });
+
+        if (url != null) {
+            FirebaseStorage.getInstance().getReference(url).getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                    Bitmap image = BitmapFactory.decodeFile(String.valueOf(finalLocalFile));
+                    mImage.setImageBitmap(image);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                }
+            });
+        } else {
+            mImage.setImageResource(R.drawable.default_image);
+        }
     }
 
     @Override

@@ -1,6 +1,8 @@
 package me.lensevents.lensevents;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -119,7 +121,7 @@ public class GroupDetailsFragment extends Fragment {
         });
 
         //If the user is an administrator
-        if (group.getAdministrators().contains(principal.getUid())) {
+        if (group.getAdministrators() != null && group.getAdministrators().contains(principal.getUid())) {
             mAdministratorsTitle.setVisibility(View.VISIBLE);
             mGroupsAdmins.setVisibility(View.VISIBLE);
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
