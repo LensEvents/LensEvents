@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             }
         }
         if (requestCode == CreateGroupFragment.REQUEST_CODE) {
-            CreateGroupFragment groupFragment = (CreateGroupFragment) getSupportFragmentManager().findFragmentByTag("groupFragment");
+            CreateGroupFragment groupFragment = (CreateGroupFragment) getSupportFragmentManager().findFragmentByTag("createGroupFragment");
             groupFragment.onActivityResult(requestCode, resultCode, data);
         }
     }

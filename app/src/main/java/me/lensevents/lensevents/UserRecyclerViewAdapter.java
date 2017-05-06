@@ -88,6 +88,9 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
                 query.addChildEventListener(userEventListener);
             }
         } else if (mode == "members") {
+            if (groupDto.getMembers() == null) {
+                groupDto.setMembers(new ArrayList<String>());
+            }
             for (String uid : groupDto.getMembers()) {
                 query = FirebaseDatabase.getInstance().getReference().child("Users").orderByChild("uid").equalTo(uid);
                 query.addChildEventListener(userEventListener);

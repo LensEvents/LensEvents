@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.util.ArrayMap;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -21,6 +23,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -76,6 +79,7 @@ public class GroupDetailsFragment extends Fragment {
         TextView mAdministratorsTitle = (TextView) view.findViewById(R.id.group_administrators_title);
         View mGroupsAdmins = view.findViewById(R.id.group_admins);
         final Button mJoinButton = (Button) view.findViewById(R.id.group_join);
+        Button mDeleteGroupButton = (Button) view.findViewById(R.id.group_deleteGroup);
         //TODO: Botón para ir a la información multimedia
 
         RequestForImageTask requestForImageTask = new RequestForImageTask();
@@ -91,7 +95,7 @@ public class GroupDetailsFragment extends Fragment {
         Integer numberOfMembers = group.getMembers() != null ? group.getMembers().size() : 0;
         mNumberUsers.setText(numberOfMembers + " " + getString(R.string.members));
         if (numberOfMembers == 0) {
-            mViewUsers.setVisibility(View.INVISIBLE);
+            mViewUsers.setVisibility(View.GONE);
         }
         mViewUsers.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,6 +118,19 @@ public class GroupDetailsFragment extends Fragment {
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
             transaction.replace(R.id.content_frament_user_to_replace, UserFragment.newInstance("administrators", group, key));
             transaction.commit();
+
+            mDeleteGroupButton.setVisibility(View.VISIBLE);
+            mDeleteGroupButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (group.getMembers() == null || (group.getMembers() != null && group.getMembers().isEmpty())) {
+                        FirebaseDatabase.getInstance().getReference(key).removeValue();
+//                        getFragmentManager().popBackStack();
+                    } else {
+                        Toast.makeText(getContext(), R.string.cannot_delete_group, Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
         }
 
         joinGroupListener = new View.OnClickListener() {
@@ -127,6 +144,9 @@ public class GroupDetailsFragment extends Fragment {
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         GroupDto groupDto = dataSnapshot.getValue(GroupDto.class);
                         List<String> members = groupDto.getMembers();
+                        if (members == null) {
+                            members = new ArrayList<String>();
+                        }
                         members.add(principal.getUid());
                         Map<String, Object> map = new ArrayMap<>();
                         map.put("members", members);
@@ -139,6 +159,9 @@ public class GroupDetailsFragment extends Fragment {
                 });
                 Integer number = Integer.valueOf(mNumberUsers.getText().toString().split(" ")[0]);
                 number = number + 1;
+                if (number == 1) {
+                    mViewUsers.setVisibility(View.VISIBLE);
+                }
                 mNumberUsers.setText(number.toString() + " " + getString(R.string.members));
             }
         };
@@ -166,11 +189,16 @@ public class GroupDetailsFragment extends Fragment {
                 });
                 Integer number = Integer.valueOf(mNumberUsers.getText().toString().split(" ")[0]);
                 number = number - 1;
+                if (number == 0) {
+                    mViewUsers.setVisibility(View.GONE);
+                }
                 mNumberUsers.setText(number.toString() + " " + getString(R.string.members));
             }
         };
+        mJoinButton.setText(R.string.group_join);
+        mJoinButton.setOnClickListener(joinGroupListener);
 
-        if (!group.getMembers().contains(principal.getUid())) {
+        if (group.getMembers() == null || (group.getMembers() != null && !group.getMembers().contains(principal.getUid()))) {
             mJoinButton.setText(R.string.group_join);
             mJoinButton.setOnClickListener(joinGroupListener);
         } else {

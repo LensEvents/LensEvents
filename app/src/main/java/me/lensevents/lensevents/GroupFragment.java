@@ -67,7 +67,7 @@ public class GroupFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.replace(R.id.content_frament_to_replace, CreateGroupFragment.newInstance(category), "groupFragment");
+                transaction.replace(R.id.content_frament_to_replace, CreateGroupFragment.newInstance(category), "createGroupFragment");
                 transaction.addToBackStack(null);
                 transaction.commit();
             }
