@@ -50,25 +50,38 @@ public class GroupRecyclerViewAdapter extends RecyclerView.Adapter<GroupRecycler
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 GroupDto groupDto = dataSnapshot.getValue(GroupDto.class);
                 if (groupDto.getMembers() != null && groupDto.getMembers().contains(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
-                    applyChildListener(dataSnapshot);
+                    mGroups.add(groupDto);
+                    mGroupsIds.add(dataSnapshot.getKey());
+                    notifyItemInserted(mGroups.size() - 1);
                 }
             }
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                 GroupDto groupDto = dataSnapshot.getValue(GroupDto.class);
-                if (groupDto.getMembers() != null) {
-                    mGroups.clear();
-                    mGroupsIds.clear();
-                    notifyDataSetChanged();
-                    if (groupDto.getMembers().contains(FirebaseAuth.getInstance().getCurrentUser().getUid()))
-                        applyChildListener(dataSnapshot);
+                int index = mGroupsIds.indexOf(dataSnapshot.getKey());
+                if (groupDto.getMembers() != null && groupDto.getMembers().contains(FirebaseAuth.getInstance().getCurrentUser().getUid()) && index != -1) {
+                    mGroups.set(index, groupDto);
+                    notifyItemChanged(index);
+                } else if (index != -1) {
+                    mGroups.remove(index);
+                    mGroupsIds.remove(index);
+                    notifyItemRemoved(index);
+                } else {
+                    mGroups.add(groupDto);
+                    mGroupsIds.add(dataSnapshot.getKey());
+                    notifyItemInserted(mGroups.size() - 1);
                 }
             }
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-
+                int index = mGroupsIds.indexOf(dataSnapshot.getKey());
+                if (index != -1) {
+                    mGroups.remove(index);
+                    mGroupsIds.remove(index);
+                    notifyItemRemoved(index);
+                }
             }
 
             @Override
@@ -81,13 +94,6 @@ public class GroupRecyclerViewAdapter extends RecyclerView.Adapter<GroupRecycler
 
             }
         });
-    }
-
-    public void applyChildListener(DataSnapshot dataSnapshot) {
-        String key = dataSnapshot.getKey();
-        mDatabaseReference = FirebaseDatabase.getInstance().getReference().child("Groups").orderByKey().equalTo(key);
-        mDatabaseReference.addChildEventListener(childGroupListener);
-
     }
 
     ChildEventListener childGroupListener = new ChildEventListener() {

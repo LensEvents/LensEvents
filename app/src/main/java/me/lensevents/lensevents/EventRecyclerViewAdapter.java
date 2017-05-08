@@ -182,7 +182,7 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
         if (groupDto.getEvents() != null) {
             for (String key : groupDto.getEvents()) {
                 mDatabaseReference = FirebaseDatabase.getInstance().getReference().child("Events").orderByKey().equalTo(key);
-                mDatabaseReference.addChildEventListener(childPrincipalEventListener);
+                mDatabaseReference.addChildEventListener(childEventListener);
             }
         }
     }
