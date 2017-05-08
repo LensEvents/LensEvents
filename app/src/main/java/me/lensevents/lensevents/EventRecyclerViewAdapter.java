@@ -9,12 +9,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 
 import java.text.ParseException;
@@ -27,26 +29,71 @@ import java.util.concurrent.ExecutionException;
 import me.lensevents.dto.GroupDto;
 import me.lensevents.lensevents.EventFragment.OnFragmentInteractionListener;
 import me.lensevents.model.Event;
+import me.lensevents.model.User;
 
 public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecyclerViewAdapter.ViewHolder> {
 
     private Query mDatabaseReference;
     private final OnFragmentInteractionListener mListener;
     private String key;
+    private Boolean myEvents;
 
     private List<Event> mEvents = new ArrayList<>();
     private List<String> mEventsIds = new ArrayList<>();
 
-    public EventRecyclerViewAdapter(String key, OnFragmentInteractionListener listener) {
+    public EventRecyclerViewAdapter(String key, Boolean myEvents, OnFragmentInteractionListener listener) {
         mListener = listener;
         this.key = key;
-        if (key == null) {
+        this.myEvents = myEvents;
+        if (key == null && myEvents == null) {
             mDatabaseReference = FirebaseDatabase.getInstance().getReference("Events").orderByChild("date");
             mDatabaseReference.addChildEventListener(childEventListener);
         } else {
-            //TODO: Eventos por grupo
-            requestForGroup();
+            if (myEvents) {
+                requestForPrincipal();
+            } else {
+                requestForGroup();
+            }
         }
+    }
+
+    private void requestForPrincipal() {
+        FirebaseDatabase.getInstance().getReference().child("Events").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Event event = dataSnapshot.getValue(Event.class);
+                if (event.getAssistants() != null && event.getAssistants().contains(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+                    applyChildListener(dataSnapshot);
+                }
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                Event event = dataSnapshot.getValue(Event.class);
+                if (event.getAssistants() != null) {
+                    mEvents.clear();
+                    mEventsIds.clear();
+                    notifyDataSetChanged();
+                    if (event.getAssistants().contains(FirebaseAuth.getInstance().getCurrentUser().getUid()))
+                        applyChildListener(dataSnapshot);
+                }
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     public void requestForGroup() {
@@ -92,12 +139,19 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
         }
     }
 
+    public void applyChildListener(DataSnapshot dataSnapshot) {
+        String key = dataSnapshot.getKey();
+        mDatabaseReference = FirebaseDatabase.getInstance().getReference().child("Events").orderByKey().equalTo(key);
+        mDatabaseReference.addChildEventListener(childEventListener);
+
+    }
+
     ChildEventListener childEventListener = new ChildEventListener() {
         @Override
         public void onChildAdded(DataSnapshot dataSnapshot, String s) {
             Event event = dataSnapshot.getValue(Event.class);
             boolean aux = false;
-            if (key != null) {
+            if (key != null || myEvents != null) {
                 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
                 Date eventDate = null;
                 try {
@@ -124,7 +178,7 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
         @Override
         public void onChildChanged(DataSnapshot dataSnapshot, String s) {
             Event event = dataSnapshot.getValue(Event.class);
-            if (key == null) {
+            if (key == null && myEvents == null) {
                 int index = mEventsIds.indexOf(dataSnapshot.getKey());
                 mEvents.set(index, event);
                 notifyItemChanged(index);

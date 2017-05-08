@@ -35,4 +35,6 @@
     <string name="group_edit_photo">Editar foto</string>
     <string name="edit_group_button">Editar</string>
     <string name="logout">Cerrar sesión</string>
+    <string name="my_events">Mis eventos</string>
+    <string name="my_groups">Mis grupos</string>
 </resources>

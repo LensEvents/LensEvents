@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -25,13 +26,14 @@ import me.lensevents.model.Category;
 import me.lensevents.model.Event;
 import me.lensevents.model.User;
 
-public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener, HomeFragment.OnFragmentInteractionListener, CategoryFragment.OnListFragmentInteractionListener, GroupFragment.OnListFragmentInteractionListener, GroupDetailsFragment.OnFragmentInteractionListener, UserFragment.OnListFragmentInteractionListener, CreateGroupFragment.OnFragmentInteractionListener, EventFragment.OnFragmentInteractionListener, MultimediaFragment.OnListFragmentInteractionListener, EditGroupFragment.OnFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener, HomeFragment.OnFragmentInteractionListener, CategoryFragment.OnListFragmentInteractionListener, GroupFragment.OnListFragmentInteractionListener, GroupDetailsFragment.OnFragmentInteractionListener, UserFragment.OnListFragmentInteractionListener, CreateGroupFragment.OnFragmentInteractionListener, EventFragment.OnFragmentInteractionListener, MultimediaFragment.OnListFragmentInteractionListener, EditGroupFragment.OnFragmentInteractionListener, TabCalendarFragment.OnFragmentInteractionListener {
 
     private static final int RC_SIGN_IN = 123;
     private HomeFragment homeFragment;
     private CategoryFragment categoryFragment;
     private GroupFragment groupFragment;
     private EventFragment eventFragment;
+    private TabCalendarFragment tabCalendarFragment;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -97,12 +99,16 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         homeFragment = new HomeFragment();
         categoryFragment = new CategoryFragment();
         eventFragment = new EventFragment();
+        tabCalendarFragment = new TabCalendarFragment();
+
         transaction.replace(R.id.content_frament_to_replace, homeFragment);
         transaction.commit();
 
@@ -143,6 +149,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 transaction.commit();
                 return true;
             case R.id.navigation_calendar:
+                transaction.replace(R.id.content_frament_to_replace, tabCalendarFragment);
+                transaction.commit();
                 return true;
         }
         return false;

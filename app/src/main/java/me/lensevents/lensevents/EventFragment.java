@@ -27,8 +27,10 @@ public class EventFragment extends Fragment {
 
     private static final String ARG_COLUMN_COUNT = "column-count";
     private static final String KEY = "key";
+    private static final String MY_EVENTS = "myEvents";
     private int mColumnCount = 1;
     private String key;
+    private Boolean myEvents;
     private OnFragmentInteractionListener mListener;
 
     public EventFragment() {
@@ -43,12 +45,21 @@ public class EventFragment extends Fragment {
         return fragment;
     }
 
+    public static EventFragment newInstance(boolean myEvents) {
+        EventFragment fragment = new EventFragment();
+        Bundle args = new Bundle();
+        args.putBoolean(MY_EVENTS, myEvents);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
             key = getArguments().getString(KEY);
+            myEvents = getArguments().getBoolean(MY_EVENTS);
         }
     }
 
@@ -63,7 +74,7 @@ public class EventFragment extends Fragment {
             RecyclerView recyclerView = (RecyclerView) view;
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
 
-            EventRecyclerViewAdapter eventRecyclerViewAdapter = new EventRecyclerViewAdapter(key, mListener);
+            EventRecyclerViewAdapter eventRecyclerViewAdapter = new EventRecyclerViewAdapter(key, myEvents, mListener);
             recyclerView.setAdapter(eventRecyclerViewAdapter);
         }
 
