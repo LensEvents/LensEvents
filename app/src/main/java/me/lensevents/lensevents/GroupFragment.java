@@ -57,9 +57,9 @@ public class GroupFragment extends Fragment {
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.list2);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
 
-        Query query = FirebaseDatabase.getInstance().getReference().child("Groups").orderByChild("category").equalTo(category.toString());
 
-        GroupRecyclerViewAdapter groupRecyclerViewAdapter = new GroupRecyclerViewAdapter(getContext(), query, mListener);
+
+        GroupRecyclerViewAdapter groupRecyclerViewAdapter = new GroupRecyclerViewAdapter(getContext(), category, mListener);
         recyclerView.setAdapter(groupRecyclerViewAdapter);
 
         FloatingActionButton mAddGroup = (FloatingActionButton) view.findViewById(R.id.add_group);
@@ -95,6 +95,6 @@ public class GroupFragment extends Fragment {
     }
 
     public interface OnListFragmentInteractionListener {
-        void onListFragmentInteraction(GroupDto item, String key);
+        void onListFragmentInteraction(GroupDto item, String key, Boolean isFromCategory);
     }
 }

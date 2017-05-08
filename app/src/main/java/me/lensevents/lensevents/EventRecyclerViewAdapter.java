@@ -49,52 +49,90 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
             mDatabaseReference = FirebaseDatabase.getInstance().getReference("Events").orderByChild("date");
             mDatabaseReference.addChildEventListener(childEventListener);
         } else {
-            if (myEvents) {
+            if (myEvents != null && key != null) {
+                requestForGroupAndPrincipal();
+            } else if (myEvents != null) {
                 requestForPrincipal();
-            } else {
+            } else if (key != null) {
                 requestForGroup();
             }
         }
     }
 
-    private void requestForPrincipal() {
-        FirebaseDatabase.getInstance().getReference().child("Events").addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Event event = dataSnapshot.getValue(Event.class);
-                if (event.getAssistants() != null && event.getAssistants().contains(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
-                    applyChildListener(dataSnapshot);
-                }
-            }
+    private void requestForGroupAndPrincipal() {
+        FirebaseDatabase.getInstance().getReference("Groups").orderByKey().equalTo(key)
+                .addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                        applyPrincipalListener(dataSnapshot);
+                    }
 
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                Event event = dataSnapshot.getValue(Event.class);
-                if (event.getAssistants() != null) {
-                    mEvents.clear();
-                    mEventsIds.clear();
-                    notifyDataSetChanged();
-                    if (event.getAssistants().contains(FirebaseAuth.getInstance().getCurrentUser().getUid()))
-                        applyChildListener(dataSnapshot);
-                }
-            }
+                    @Override
+                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                        mEvents.clear();
+                        mEventsIds.clear();
+                        notifyDataSetChanged();
+                        applyPrincipalListener(dataSnapshot);
+                    }
 
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                    @Override
+                    public void onChildRemoved(DataSnapshot dataSnapshot) {
 
-            }
+                    }
 
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                    @Override
+                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
 
-            }
+                    }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
+                    }
+                });
+
     }
+
+    private void requestForPrincipal() {
+        FirebaseDatabase.getInstance().getReference().child("Events").addChildEventListener(childPrincipalEventListener);
+    }
+
+    ChildEventListener childPrincipalEventListener = new ChildEventListener() {
+        @Override
+        public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+            Event event = dataSnapshot.getValue(Event.class);
+            if (event.getAssistants() != null && event.getAssistants().contains(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+                applyChildListener(dataSnapshot);
+            }
+        }
+
+        @Override
+        public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+            Event event = dataSnapshot.getValue(Event.class);
+            if (event.getAssistants() != null) {
+                mEvents.clear();
+                mEventsIds.clear();
+                notifyDataSetChanged();
+                if (event.getAssistants().contains(FirebaseAuth.getInstance().getCurrentUser().getUid()))
+                    applyChildListener(dataSnapshot);
+            }
+        }
+
+        @Override
+        public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+        }
+
+        @Override
+        public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+        }
+
+        @Override
+        public void onCancelled(DatabaseError databaseError) {
+
+        }
+    };
 
     public void requestForGroup() {
         FirebaseDatabase.getInstance().getReference("Groups").orderByKey().equalTo(key)
@@ -135,6 +173,16 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
             for (String key : groupDto.getEvents()) {
                 mDatabaseReference = FirebaseDatabase.getInstance().getReference().child("Events").orderByKey().equalTo(key);
                 mDatabaseReference.addChildEventListener(childEventListener);
+            }
+        }
+    }
+
+    public void applyPrincipalListener(DataSnapshot dataSnapshot) {
+        GroupDto groupDto = dataSnapshot.getValue(GroupDto.class);
+        if (groupDto.getEvents() != null) {
+            for (String key : groupDto.getEvents()) {
+                mDatabaseReference = FirebaseDatabase.getInstance().getReference().child("Events").orderByKey().equalTo(key);
+                mDatabaseReference.addChildEventListener(childPrincipalEventListener);
             }
         }
     }

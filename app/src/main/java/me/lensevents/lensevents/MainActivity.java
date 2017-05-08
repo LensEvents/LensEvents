@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -149,6 +150,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 transaction.commit();
                 return true;
             case R.id.navigation_calendar:
+                tabCalendarFragment = new TabCalendarFragment();
                 transaction.replace(R.id.content_frament_to_replace, tabCalendarFragment);
                 transaction.commit();
                 return true;
@@ -167,12 +169,17 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     }
 
     @Override
-    public void onListFragmentInteraction(GroupDto item, String key) {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        GroupDetailsFragment groupDetailsFragment = GroupDetailsFragment.newInstance(item, key);
-        transaction.replace(R.id.content_frament_to_replace, groupDetailsFragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
+    public void onListFragmentInteraction(GroupDto item, String key, Boolean isFromCategory) {
+        if (isFromCategory) {
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            GroupDetailsFragment groupDetailsFragment = GroupDetailsFragment.newInstance(item, key);
+            transaction.replace(R.id.content_frament_to_replace, groupDetailsFragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
+        } else {
+            tabCalendarFragment.replaceFragment(EventFragment.newInstance(true, key));
+        }
+
     }
 
 

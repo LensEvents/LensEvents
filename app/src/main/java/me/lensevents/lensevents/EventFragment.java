@@ -37,18 +37,13 @@ public class EventFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static EventFragment newInstance(String key) {
+    public static EventFragment newInstance(Boolean myEvents, String key) {
         EventFragment fragment = new EventFragment();
         Bundle args = new Bundle();
-        args.putString(KEY, key);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    public static EventFragment newInstance(boolean myEvents) {
-        EventFragment fragment = new EventFragment();
-        Bundle args = new Bundle();
-        args.putBoolean(MY_EVENTS, myEvents);
+        if (key != null)
+            args.putString(KEY, key);
+        if (myEvents != null)
+            args.putBoolean(MY_EVENTS, myEvents);
         fragment.setArguments(args);
         return fragment;
     }

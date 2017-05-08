@@ -3,78 +3,127 @@ package me.lensevents.lensevents;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import me.lensevents.dto.GroupDto;
-import me.lensevents.model.Group;
+import me.lensevents.model.Category;
 
 public class GroupRecyclerViewAdapter extends RecyclerView.Adapter<GroupRecyclerViewAdapter.ViewHolder> {
 
     private Context mContext;
     private Query mDatabaseReference;
-    private ChildEventListener mValueEventListener;
+    private Category category;
     private final GroupFragment.OnListFragmentInteractionListener mListener;
 
     private List<String> mGroupsIds = new ArrayList<>();
     private List<GroupDto> mGroups = new ArrayList<>();
 
-    public GroupRecyclerViewAdapter(final Context context, Query ref, GroupFragment.OnListFragmentInteractionListener mListener) {
+    public GroupRecyclerViewAdapter(final Context context, Category category, GroupFragment.OnListFragmentInteractionListener mListener) {
         mContext = context;
-        mDatabaseReference = ref;
+        this.category = category;
+        if (category != null) {
+            mDatabaseReference = FirebaseDatabase.getInstance().getReference().child("Groups").orderByChild("category").equalTo(category.toString());
+            mDatabaseReference.addChildEventListener(childGroupListener);
+        } else {
+            requestForPrincipal();
+        }
         this.mListener = mListener;
+    }
 
-        ChildEventListener valueEventListener = new ChildEventListener() {
-
+    private void requestForPrincipal() {
+        FirebaseDatabase.getInstance().getReference().child("Groups").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 GroupDto groupDto = dataSnapshot.getValue(GroupDto.class);
-                mGroups.add(groupDto);
-                mGroupsIds.add(dataSnapshot.getKey());
-                notifyItemInserted(mGroups.size() - 1);
+                if (groupDto.getMembers() != null && groupDto.getMembers().contains(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+                    applyChildListener(dataSnapshot);
+                }
             }
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                 GroupDto groupDto = dataSnapshot.getValue(GroupDto.class);
-                int index = mGroupsIds.indexOf(dataSnapshot.getKey());
-                mGroups.set(index, groupDto);
-                notifyItemChanged(index);
+                if (groupDto.getMembers() != null) {
+                    mGroups.clear();
+                    mGroupsIds.clear();
+                    notifyDataSetChanged();
+                    if (groupDto.getMembers().contains(FirebaseAuth.getInstance().getCurrentUser().getUid()))
+                        applyChildListener(dataSnapshot);
+                }
             }
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-                int index = mGroupsIds.indexOf(dataSnapshot.getKey());
-                mGroups.remove(index);
-                mGroupsIds.remove(index);
-                notifyItemRemoved(index);
+
             }
 
             @Override
             public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-            }
-        };
-        ref.addChildEventListener(valueEventListener);
 
-        mValueEventListener = valueEventListener;
+            }
+        });
     }
+
+    public void applyChildListener(DataSnapshot dataSnapshot) {
+        String key = dataSnapshot.getKey();
+        mDatabaseReference = FirebaseDatabase.getInstance().getReference().child("Groups").orderByKey().equalTo(key);
+        mDatabaseReference.addChildEventListener(childGroupListener);
+
+    }
+
+    ChildEventListener childGroupListener = new ChildEventListener() {
+
+        @Override
+        public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+            GroupDto groupDto = dataSnapshot.getValue(GroupDto.class);
+            mGroups.add(groupDto);
+            mGroupsIds.add(dataSnapshot.getKey());
+            notifyItemInserted(mGroups.size() - 1);
+        }
+
+        @Override
+        public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+            GroupDto groupDto = dataSnapshot.getValue(GroupDto.class);
+            int index = mGroupsIds.indexOf(dataSnapshot.getKey());
+            mGroups.set(index, groupDto);
+            notifyItemChanged(index);
+        }
+
+        @Override
+        public void onChildRemoved(DataSnapshot dataSnapshot) {
+            int index = mGroupsIds.indexOf(dataSnapshot.getKey());
+            mGroups.remove(index);
+            mGroupsIds.remove(index);
+            notifyItemRemoved(index);
+        }
+
+        @Override
+        public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+        }
+
+        @Override
+        public void onCancelled(DatabaseError databaseError) {
+        }
+    };
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -99,7 +148,8 @@ public class GroupRecyclerViewAdapter extends RecyclerView.Adapter<GroupRecycler
             @Override
             public void onClick(View v) {
                 if (null != mListener) {
-                    mListener.onListFragmentInteraction(holder.mItem, key);
+                    Boolean isFromCategory = category != null ? true : false;
+                    mListener.onListFragmentInteraction(holder.mItem, key, isFromCategory);
                 }
             }
         });
@@ -121,12 +171,6 @@ public class GroupRecyclerViewAdapter extends RecyclerView.Adapter<GroupRecycler
             mView = itemView;
             imageView = (ImageView) itemView.findViewById(R.id.user_image);
             nameView = (TextView) itemView.findViewById(R.id.group_name);
-        }
-    }
-
-    public void cleanupListener() {
-        if (mValueEventListener != null) {
-            mDatabaseReference.removeEventListener(mValueEventListener);
         }
     }
 

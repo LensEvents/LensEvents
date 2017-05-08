@@ -16,6 +16,7 @@ public class TabCalendarFragment extends Fragment {
 
     public TabAdapter adapter;
     private TabLayout tabs;
+    private ViewPager viewPager;
 
     public TabCalendarFragment() {
         // Required empty public constructor
@@ -42,7 +43,7 @@ public class TabCalendarFragment extends Fragment {
 
         adapter = new TabAdapter(getChildFragmentManager());
 
-        ViewPager viewPager = (ViewPager) view.findViewById(R.id.viewpager);
+        viewPager = (ViewPager) view.findViewById(R.id.viewpager);
         setupViewPager(viewPager);
 
         tabs = (TabLayout) getActivity().findViewById(R.id.tabs);
@@ -52,6 +53,7 @@ public class TabCalendarFragment extends Fragment {
         return view;
 
     }
+
 
     @Override
     public void onPause() {
@@ -87,8 +89,12 @@ public class TabCalendarFragment extends Fragment {
     }
 
     private void setupViewPager(ViewPager viewPager) {
-        adapter.addFragment(EventFragment.newInstance(true), getString(R.string.my_events));
-//        adapter.addFragment(GroupFragment.newInstance(""), getString(R.string.my_groups));
+        adapter.addFragment(EventFragment.newInstance(true, null), getString(R.string.my_events));
+        adapter.addFragment(new GroupFragment(), getString(R.string.my_groups));
         viewPager.setAdapter(adapter);
+    }
+
+    public void replaceFragment(Fragment fragment) {
+        adapter.replaceFragment(1, fragment);
     }
 }

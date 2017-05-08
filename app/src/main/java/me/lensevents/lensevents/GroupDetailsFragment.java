@@ -228,7 +228,7 @@ public class GroupDetailsFragment extends Fragment {
         }
 
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        EventFragment eventFragment = EventFragment.newInstance(key);
+        EventFragment eventFragment = EventFragment.newInstance(null, key);
         transaction.replace(R.id.content_frament_event_to_replace, eventFragment);
         transaction.commit();
 
