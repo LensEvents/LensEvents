@@ -13,6 +13,8 @@
     <string name="members">miembros</string>
     <string name="group_view_media">Ver información multimedia</string>
     <string name="group_view_users">Ver usuarios</string>
+    <string name="event_view_assistants">Ver asistentes</string>
+    <string name="event_view_messages">Ver tablón de mensajes</string>
     <string name="administrators">Administradores</string>
 
     <!-- TODO: Remove or change this placeholder text -->

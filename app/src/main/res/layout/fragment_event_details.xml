@@ -1,0 +1,259 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="me.lensevents.lensevents.EventDetailsFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/event_image"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/card_image_height"
+                android:scaleType="centerCrop"
+                tools:src="@drawable/default_image" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <TextView
+                    android:id="@+id/event_name"
+                    android:layout_width="303dp"
+                    android:layout_height="64dp"
+                    android:paddingBottom="@dimen/md_keylines"
+                    android:paddingEnd="@dimen/md_keylines"
+                    android:paddingStart="@dimen/md_keylines"
+                    android:paddingTop="@dimen/md_keylines"
+                    android:text="Default"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                    android:textColor="@color/colorPrimary"
+                    android:layout_weight="0.80" />
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/delete_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|start"
+                    android:clickable="true"
+                    android:visibility="gone"
+                    app:backgroundTint="@color/tw__composer_red"
+                    app:fabSize="normal"
+                    app:srcCompat="@drawable/ic_delete_black_24dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/imageView2"
+                    android:layout_width="44dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.30"
+                    android:paddingBottom="@dimen/md_littlelines"
+                    android:paddingLeft="@dimen/md_littlelines"
+                    android:paddingTop="@dimen/md_littlelines"
+                    app:srcCompat="@drawable/ic_location_on_black_24dp" />
+
+                <TextView
+                    android:id="@+id/event_location"
+                    android:layout_width="288dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:elevation="0dp"
+                    android:paddingBottom="@dimen/md_littlelines"
+                    android:paddingLeft="@dimen/md_littlelines"
+                    android:paddingTop="@dimen/md_littlelines"
+                    android:text="Default"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/imageView3"
+                    android:layout_width="44dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.30"
+                    android:paddingBottom="@dimen/md_littlelines"
+                    android:paddingLeft="@dimen/md_littlelines"
+                    android:paddingTop="@dimen/md_littlelines"
+                    app:srcCompat="@drawable/ic_event_black_24dp" />
+
+                <TextView
+                    android:id="@+id/event_date"
+                    android:layout_width="288dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:elevation="0dp"
+                    android:paddingBottom="@dimen/md_littlelines"
+                    android:paddingLeft="@dimen/md_littlelines"
+                    android:paddingTop="@dimen/md_littlelines"
+                    android:text="Default"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <ImageView
+                    android:id="@+id/imageView4"
+                    android:layout_width="44dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.30"
+                    android:paddingBottom="@dimen/md_keylines"
+                    android:paddingLeft="@dimen/md_littlelines"
+                    android:paddingTop="@dimen/md_littlelines"
+                    app:srcCompat="@drawable/ic_event_available_black_24dp" />
+
+                <TextView
+                    android:id="@+id/event_confirmation_date"
+                    android:layout_width="288dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:elevation="0dp"
+                    android:paddingBottom="@dimen/md_keylines"
+                    android:paddingLeft="@dimen/md_littlelines"
+                    android:paddingTop="@dimen/md_littlelines"
+                    android:text="Default"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                    android:textColor="@android:color/holo_green_dark" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/event_description"
+                    android:layout_width="414dp"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="8dp"
+                    android:paddingEnd="@dimen/md_keylines"
+                    android:paddingStart="@dimen/md_keylines"
+                    android:paddingTop="8dp"
+                    android:text="Default"
+                    android:textAppearance="@style/TextAppearance.AppCompat" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <TextView
+                    android:id="@+id/event_assistants_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="48dp"
+                    android:layout_weight="0.26"
+                    android:paddingBottom="8dp"
+                    android:paddingEnd="@dimen/md_keylines"
+                    android:paddingStart="@dimen/md_keylines"
+                    android:paddingTop="8dp"
+                    android:text="Default"
+                    android:textAppearance="@style/TextAppearance.AppCompat" />
+
+                <Button
+                    android:id="@+id/event_viewAssistants_button"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/event_view_assistants"
+                    android:textColor="?attr/colorPrimary" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="16dp"
+                android:paddingEnd="@dimen/md_keylines"
+                android:paddingStart="@dimen/md_keylines">
+
+                <Button
+                    android:id="@+id/event_join"
+                    style="@style/Widget.AppCompat.Button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorPrimary"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:text="@string/group_join"
+                    android:textColor="@color/authui_inputTextColor" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/event_administrators_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/md_keylines"
+                android:paddingEnd="@dimen/md_keylines"
+                android:paddingStart="@dimen/md_keylines"
+                android:paddingTop="@dimen/md_keylines"
+                android:text="@string/administrators"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                android:textColor="@color/colorPrimary"
+                android:textSize="16sp"
+                android:visibility="gone" />
+
+            <include
+                android:id="@+id/event_admins"
+                layout="@layout/fragment_user_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="16dp"
+                android:paddingEnd="@dimen/md_keylines"
+                android:paddingStart="@dimen/md_keylines">
+
+                <Button
+                    android:id="@+id/event_messages_button"
+                    style="@style/Widget.AppCompat.Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingEnd="@dimen/md_keylines"
+                    android:paddingStart="@dimen/md_keylines"
+                    android:background="@color/colorPrimary"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:text="@string/event_view_messages"
+                    android:textColor="@color/authui_inputTextColor" />
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </ScrollView>
+
+</FrameLayout>

@@ -3,6 +3,8 @@ package me.lensevents.model;
 import java.io.Serializable;
 import java.util.List;
 
+import me.lensevents.dto.EventMessageDto;
+
 public class Event implements Serializable {
 
     private String name;
@@ -15,7 +17,7 @@ public class Event implements Serializable {
     private List<String> assistants;
     private String photo;
     private String confirmationDate;
-    private List<EventMessage> eventMessages;
+    private List<EventMessageDto> eventMessages;
 
     public Event() {
     }
@@ -30,7 +32,7 @@ public class Event implements Serializable {
 
     public Event(String name, String date, List<String> tags, String description,
                  Location location, Boolean isPrivate, List<String> administrators, List<String> assistants,
-                 String photo, String confirmationDate, List<EventMessage> eventMessages) {
+                 String photo, String confirmationDate, List<EventMessageDto> eventMessages) {
         this.name = name;
         this.date = date;
         this.tags = tags;
@@ -124,11 +126,11 @@ public class Event implements Serializable {
         this.confirmationDate = confirmationDate;
     }
 
-    public List<EventMessage> getEventMessages() {
+    public List<EventMessageDto> getEventMessageDtos() {
         return eventMessages;
     }
 
-    public void setEventMessages(List<EventMessage> eventMessages) {
+    public void setEventMessageDtos(List<EventMessageDto> eventMessages) {
         this.eventMessages = eventMessages;
     }
 

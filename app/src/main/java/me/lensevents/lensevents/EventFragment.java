@@ -105,6 +105,6 @@ public class EventFragment extends Fragment {
      */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onFragmentInteraction(Event event);
+        void onFragmentInteraction(Event event, String key);
     }
 }

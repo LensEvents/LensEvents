@@ -27,7 +27,13 @@ import me.lensevents.model.Category;
 import me.lensevents.model.Event;
 import me.lensevents.model.User;
 
-public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener, HomeFragment.OnFragmentInteractionListener, CategoryFragment.OnListFragmentInteractionListener, GroupFragment.OnListFragmentInteractionListener, GroupDetailsFragment.OnFragmentInteractionListener, UserFragment.OnListFragmentInteractionListener, CreateGroupFragment.OnFragmentInteractionListener, EventFragment.OnFragmentInteractionListener, MultimediaFragment.OnListFragmentInteractionListener, EditGroupFragment.OnFragmentInteractionListener, TabCalendarFragment.OnFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener,
+        HomeFragment.OnFragmentInteractionListener, CategoryFragment.OnListFragmentInteractionListener,
+        GroupFragment.OnListFragmentInteractionListener, GroupDetailsFragment.OnFragmentInteractionListener,
+        UserFragment.OnListFragmentInteractionListener, CreateGroupFragment.OnFragmentInteractionListener,
+        EventFragment.OnFragmentInteractionListener, MultimediaFragment.OnListFragmentInteractionListener,
+        EditGroupFragment.OnFragmentInteractionListener, TabCalendarFragment.OnFragmentInteractionListener,
+        EventDetailsFragment.OnFragmentInteractionListener {
 
     private static final int RC_SIGN_IN = 123;
     private HomeFragment homeFragment;
@@ -184,7 +190,12 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
 
     @Override
-    public void onFragmentInteraction(Event event) {
+    public void onFragmentInteraction(Event event, String key) {
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        EventDetailsFragment eventDetailsFragment = EventDetailsFragment.newInstance(event, key);
+        fragmentTransaction.replace(R.id.content_frament_to_replace, eventDetailsFragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
 
     }
 
