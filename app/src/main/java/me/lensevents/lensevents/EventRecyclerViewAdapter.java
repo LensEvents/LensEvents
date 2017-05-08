@@ -102,25 +102,46 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
         public void onChildAdded(DataSnapshot dataSnapshot, String s) {
             Event event = dataSnapshot.getValue(Event.class);
             if (event.getAssistants() != null && event.getAssistants().contains(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
-                applyChildListener(dataSnapshot);
+                if (isFuture(event)) {
+                    mEvents.add(event);
+                    mEventsIds.add(dataSnapshot.getKey());
+                    notifyItemInserted(mEvents.size() - 1);
+                }
             }
         }
 
         @Override
         public void onChildChanged(DataSnapshot dataSnapshot, String s) {
             Event event = dataSnapshot.getValue(Event.class);
-            if (event.getAssistants() != null) {
-                mEvents.clear();
-                mEventsIds.clear();
-                notifyDataSetChanged();
-                if (event.getAssistants().contains(FirebaseAuth.getInstance().getCurrentUser().getUid()))
-                    applyChildListener(dataSnapshot);
+            int index = mEventsIds.indexOf(dataSnapshot.getKey());
+            if (event.getAssistants() != null && event.getAssistants().contains(FirebaseAuth.getInstance().getCurrentUser().getUid()) && index != -1) {
+                if (isFuture(event)) {
+                    mEvents.set(index, event);
+                    notifyItemChanged(index);
+                } else {
+                    mEvents.remove(index);
+                    mEventsIds.remove(index);
+                    notifyItemRemoved(index);
+                }
+            } else if (index != -1) {
+
+            } else {
+                if (isFuture(event)) {
+                    mEvents.add(event);
+                    mEventsIds.add(dataSnapshot.getKey());
+                    notifyItemInserted(mEvents.size() - 1);
+                }
             }
         }
 
         @Override
         public void onChildRemoved(DataSnapshot dataSnapshot) {
-
+            int index = mEventsIds.indexOf(dataSnapshot.getKey());
+            if (index != -1) {
+                mEvents.remove(index);
+                mEventsIds.remove(index);
+                notifyItemRemoved(index);
+            }
         }
 
         @Override
@@ -182,23 +203,16 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
         if (groupDto.getEvents() != null) {
             for (String key : groupDto.getEvents()) {
                 mDatabaseReference = FirebaseDatabase.getInstance().getReference().child("Events").orderByKey().equalTo(key);
-                mDatabaseReference.addChildEventListener(childEventListener);
+                mDatabaseReference.addChildEventListener(childPrincipalEventListener);
             }
         }
-    }
-
-    public void applyChildListener(DataSnapshot dataSnapshot) {
-        String key = dataSnapshot.getKey();
-        mDatabaseReference = FirebaseDatabase.getInstance().getReference().child("Events").orderByKey().equalTo(key);
-        mDatabaseReference.addChildEventListener(childEventListener);
-
     }
 
     ChildEventListener childEventListener = new ChildEventListener() {
         @Override
         public void onChildAdded(DataSnapshot dataSnapshot, String s) {
             Event event = dataSnapshot.getValue(Event.class);
-            boolean aux = false;
+            boolean isFuture = false;
             if (key != null || myEvents != null) {
                 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
                 Date eventDate = null;
@@ -209,13 +223,13 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
                 }
                 Date now = new Date();
                 if (eventDate != null & eventDate.after(now)) {
-                    aux = true;
+                    isFuture = true;
                 }
             } else {
-                aux = true;
+                isFuture = true;
             }
 
-            if (aux) {
+            if (isFuture) {
                 mEventsIds.add(dataSnapshot.getKey());
                 mEvents.add(event);
                 notifyItemInserted(mEvents.size() - 1);
@@ -271,6 +285,22 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
 
         }
     };
+
+    public Boolean isFuture(Event event) {
+        Boolean isFuture = false;
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Date eventDate = null;
+        try {
+            eventDate = formatter.parse(event.getDate());
+        } catch (ParseException e) {
+            Log.getStackTraceString(e);
+        }
+        Date now = new Date();
+        if (eventDate != null & eventDate.after(now)) {
+            isFuture = true;
+        }
+        return isFuture;
+    }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
