@@ -232,7 +232,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     }
 
     @Override
-    public void onFragmentInteraction(EventMessageDto eventMessageDto, String key) {
+    public void onFragmentInteraction(EventMessageDto eventMessageDto) {
 
     }
 }

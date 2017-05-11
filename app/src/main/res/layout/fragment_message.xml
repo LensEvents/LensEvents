@@ -61,10 +61,7 @@
                     android:layout_marginRight="16dp"
                     android:layout_marginTop="8dp"
                     android:ellipsize="end"
-                    android:textAlignment="viewStart"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="22sp" />
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
                 <TextView
                     android:id="@+id/message_date"
@@ -76,10 +73,7 @@
                     android:layout_marginRight="16dp"
                     android:layout_marginTop="8dp"
                     android:ellipsize="end"
-                    android:textAlignment="viewStart"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="22sp" />
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
             </LinearLayout>
 
@@ -93,9 +87,7 @@
                 android:layout_marginRight="16dp"
                 android:layout_marginTop="16dp"
                 android:ellipsize="end"
-                android:textAlignment="textEnd"
-                android:textColor="@color/colorPrimary"
-                android:textSize="22sp" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
         </LinearLayout>
 

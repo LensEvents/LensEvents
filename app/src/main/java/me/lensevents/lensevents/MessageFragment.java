@@ -83,6 +83,6 @@ public class MessageFragment extends Fragment {
 
 
     public interface OnFragmentInteractionListener {
-        void onFragmentInteraction(EventMessageDto eventMessageDto, String key);
+        void onFragmentInteraction(EventMessageDto eventMessageDto);
     }
 }

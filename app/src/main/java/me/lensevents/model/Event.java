@@ -126,11 +126,11 @@ public class Event implements Serializable {
         this.confirmationDate = confirmationDate;
     }
 
-    public List<EventMessageDto> getEventMessageDtos() {
+    public List<EventMessageDto> getEventMessages() {
         return eventMessages;
     }
 
-    public void setEventMessageDtos(List<EventMessageDto> eventMessages) {
+    public void setEventMessages(List<EventMessageDto> eventMessages) {
         this.eventMessages = eventMessages;
     }
 
