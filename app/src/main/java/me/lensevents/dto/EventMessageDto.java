@@ -1,18 +1,16 @@
 package me.lensevents.dto;
 
 
-import com.google.firebase.auth.FirebaseUser;
-
 public class EventMessageDto {
 
     private String text;
     private String date;
-    private FirebaseUser sender;
+    private String sender;
 
     public EventMessageDto() {
     }
 
-    public EventMessageDto(String text, String date, FirebaseUser sender) {
+    public EventMessageDto(String text, String date, String sender) {
         this.text = text;
         this.date = date;
         this.sender = sender;
@@ -34,11 +32,11 @@ public class EventMessageDto {
         this.date = date;
     }
 
-    public FirebaseUser getSender() {
+    public String getSender() {
         return sender;
     }
 
-    public void setSender(FirebaseUser sender) {
+    public void setSender(String sender) {
         this.sender = sender;
     }
 

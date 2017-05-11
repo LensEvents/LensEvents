@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -88,6 +89,16 @@ public class EventDetailsFragment extends Fragment {
         if (event.getAssistants() != null) {
             eventAssistants.setText(event.getAssistants().size() + " asistentes");
         }
+
+        eventMessagesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.content_frament_to_replace, MessageFragment.newInstance(key));
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
+        });
 
 
         return view;

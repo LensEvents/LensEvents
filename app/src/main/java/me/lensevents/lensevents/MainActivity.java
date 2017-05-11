@@ -22,6 +22,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.Arrays;
 
+import me.lensevents.dto.EventMessageDto;
 import me.lensevents.dto.GroupDto;
 import me.lensevents.model.Category;
 import me.lensevents.model.Event;
@@ -33,7 +34,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         UserFragment.OnListFragmentInteractionListener, CreateGroupFragment.OnFragmentInteractionListener,
         EventFragment.OnFragmentInteractionListener, MultimediaFragment.OnListFragmentInteractionListener,
         EditGroupFragment.OnFragmentInteractionListener, TabCalendarFragment.OnFragmentInteractionListener,
-        EventDetailsFragment.OnFragmentInteractionListener {
+        EventDetailsFragment.OnFragmentInteractionListener, MessageFragment.OnFragmentInteractionListener {
 
     private static final int RC_SIGN_IN = 123;
     private HomeFragment homeFragment;
@@ -228,5 +229,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onFragmentInteraction(EventMessageDto eventMessageDto, String key) {
+
     }
 }
