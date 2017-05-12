@@ -2,6 +2,7 @@ package me.lensevents.lensevents;
 
 import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,10 +13,12 @@ import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Logger;
 import com.google.firebase.database.Query;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import me.lensevents.dto.EventMessageDto;
 import me.lensevents.model.Event;
@@ -40,9 +43,7 @@ public class MessageRecyclerViewAdapter extends RecyclerView.Adapter<MessageRecy
                 Event event = dataSnapshot.getValue(Event.class);
                 List<EventMessageDto> eventMessageDtos = event.getEventMessages();
                 for (EventMessageDto e : eventMessageDtos) {
-                    applyUserListener(e.getSender());
-                    mMessages.add(e);
-                    notifyItemInserted(mMessages.size() - 1);
+                    applyUserListener(e);
                 }
             }
 
@@ -73,37 +74,43 @@ public class MessageRecyclerViewAdapter extends RecyclerView.Adapter<MessageRecy
 
     }
 
-    ChildEventListener childEventListenerUser = new ChildEventListener() {
-        @Override
-        public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-            User user = dataSnapshot.getValue(User.class);
-            mUsers.add(user);
-            notifyItemInserted(mUsers.size() - 1);
-        }
+    public void applyUserListener(EventMessageDto e) {
+        Query query = FirebaseDatabase.getInstance().getReference().child("Users").orderByChild("uid").equalTo(e.getSender());
+        applyEventUserListener(query, e);
+    }
 
-        @Override
-        public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+    private void applyEventUserListener(Query query, final EventMessageDto e) {
 
-        }
+        ChildEventListener childEventListenerUser = new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                User user = dataSnapshot.getValue(User.class);
+                mUsers.add(user);
+                mMessages.add(e);
+                notifyItemInserted(mMessages.size() - 1);
+                notifyItemInserted(mUsers.size() - 1);
+            }
 
-        @Override
-        public void onChildRemoved(DataSnapshot dataSnapshot) {
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
 
-        }
+            }
 
-        @Override
-        public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
 
-        }
+            }
 
-        @Override
-        public void onCancelled(DatabaseError databaseError) {
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
 
-        }
-    };
+            }
 
-    public void applyUserListener(String user){
-        Query query = FirebaseDatabase.getInstance().getReference().child("Users").orderByChild("uid").equalTo(user);
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
         query.addChildEventListener(childEventListenerUser);
     }
 
@@ -122,8 +129,13 @@ public class MessageRecyclerViewAdapter extends RecyclerView.Adapter<MessageRecy
 
         Bitmap image = null;
         RequestForImageTask requestForImageTask = new RequestForImageTask();
-        requestForImageTask.execute(user, holder.imageView);
+        try {
+            image = requestForImageTask.execute(user).get();
+        } catch (InterruptedException | ExecutionException e) {
+            Log.getStackTraceString(e);
+        }
 
+        holder.imageView.setImageBitmap(image);
         holder.textView.setText(eventMessage.getText());
         holder.dateView.setText(eventMessage.getDate());
         holder.userNameView.setText(user.getDisplayName());
