@@ -39,4 +39,11 @@
     <string name="logout">Cerrar sesión</string>
     <string name="my_events">Mis eventos</string>
     <string name="my_groups">Mis grupos</string>
+    <string name="date">Fecha (aaaa/mm/dd)</string>
+    <string name="location">Localización</string>
+    <string name="date_label">Fecha</string>
+    <string name="country">País</string>
+    <string name="province">Provincia</string>
+    <string name="city">Ciudad</string>
+    <string name="street">Calle</string>
 </resources>

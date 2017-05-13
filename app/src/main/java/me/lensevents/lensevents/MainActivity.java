@@ -19,6 +19,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.Arrays;
 
@@ -34,7 +35,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         UserFragment.OnListFragmentInteractionListener, CreateGroupFragment.OnFragmentInteractionListener,
         EventFragment.OnFragmentInteractionListener, MultimediaFragment.OnListFragmentInteractionListener,
         EditGroupFragment.OnFragmentInteractionListener, TabCalendarFragment.OnFragmentInteractionListener,
-        EventDetailsFragment.OnFragmentInteractionListener, MessageFragment.OnFragmentInteractionListener {
+        EventDetailsFragment.OnFragmentInteractionListener, MessageFragment.OnFragmentInteractionListener,
+        CreateEventFragment.OnFragmentInteractionListener {
 
     private static final int RC_SIGN_IN = 123;
     private HomeFragment homeFragment;
@@ -77,6 +79,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         } else if (requestCode == EditGroupFragment.REQUEST_CODE) {
             EditGroupFragment groupFragment = (EditGroupFragment) getSupportFragmentManager().findFragmentByTag("editGroupFragment");
             groupFragment.onActivityResult(requestCode, resultCode, data);
+        }else if(requestCode == CreateEventFragment.REQUEST_CODE){
+            CreateEventFragment createGroupFragment = (CreateEventFragment) getSupportFragmentManager().findFragmentByTag("createEventFragment");
+            createGroupFragment.onActivityResult(requestCode, resultCode, data);
         }
     }
 
@@ -109,7 +114,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         homeFragment = new HomeFragment();
