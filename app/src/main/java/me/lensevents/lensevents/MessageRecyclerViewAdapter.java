@@ -50,7 +50,16 @@ public class MessageRecyclerViewAdapter extends RecyclerView.Adapter<MessageRecy
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
+                mMessages.clear();
+                mUsers.clear();
+                notifyDataSetChanged();
+                Event event = dataSnapshot.getValue(Event.class);
+                if (event.getEventMessages() != null) {
+                    List<EventMessageDto> eventMessageDtos = event.getEventMessages();
+                    for (EventMessageDto e : eventMessageDtos) {
+                        applyUserListener(e);
+                    }
+                }
             }
 
             @Override
@@ -174,7 +183,6 @@ public class MessageRecyclerViewAdapter extends RecyclerView.Adapter<MessageRecy
             textView = (TextView) itemView.findViewById(R.id.message_text);
             dateView = (TextView) itemView.findViewById(R.id.message_date);
             userNameView = (TextView) itemView.findViewById(R.id.message_user);
-            noMessageText = (TextView) itemView.findViewById(R.id.message_no_content);
         }
     }
 
