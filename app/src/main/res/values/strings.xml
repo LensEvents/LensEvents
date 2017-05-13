@@ -49,4 +49,5 @@
     <string name="city">Ciudad</string>
     <string name="street">Calle</string>
     <string name="message_no_content">No hay ningún mensaje en el tablón</string>
+    <string name="no_assistant">0 asistentes</string>
 </resources>
