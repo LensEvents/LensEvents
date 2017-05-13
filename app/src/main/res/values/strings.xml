@@ -26,6 +26,8 @@
     <string name="public_group">Público</string>
     <string name="private_group">Privado</string>
     <string name="create">Crear</string>
+    <string name="write">Escribir mensaje</string>
+    <string name="message">Mensaje</string>
     <string name="next_events">Próximos eventos</string>
     <string name="group_join">Unirse</string>
     <string name="group_add_photo">Añadir foto</string>
@@ -46,4 +48,5 @@
     <string name="province">Provincia</string>
     <string name="city">Ciudad</string>
     <string name="street">Calle</string>
+    <string name="message_no_content">No hay ningún mensaje en el tablón</string>
 </resources>

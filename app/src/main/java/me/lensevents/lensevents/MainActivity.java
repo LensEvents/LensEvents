@@ -35,8 +35,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         UserFragment.OnListFragmentInteractionListener, CreateGroupFragment.OnFragmentInteractionListener,
         EventFragment.OnFragmentInteractionListener, MultimediaFragment.OnListFragmentInteractionListener,
         EditGroupFragment.OnFragmentInteractionListener, TabCalendarFragment.OnFragmentInteractionListener,
+        CreateEventFragment.OnFragmentInteractionListener,
         EventDetailsFragment.OnFragmentInteractionListener, MessageFragment.OnFragmentInteractionListener,
-        CreateEventFragment.OnFragmentInteractionListener {
+        CreateMessageFragment.OnFragmentInteractionListener {
 
     private static final int RC_SIGN_IN = 123;
     private HomeFragment homeFragment;
@@ -79,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         } else if (requestCode == EditGroupFragment.REQUEST_CODE) {
             EditGroupFragment groupFragment = (EditGroupFragment) getSupportFragmentManager().findFragmentByTag("editGroupFragment");
             groupFragment.onActivityResult(requestCode, resultCode, data);
-        }else if(requestCode == CreateEventFragment.REQUEST_CODE){
+        } else if (requestCode == CreateEventFragment.REQUEST_CODE) {
             CreateEventFragment createGroupFragment = (CreateEventFragment) getSupportFragmentManager().findFragmentByTag("createEventFragment");
             createGroupFragment.onActivityResult(requestCode, resultCode, data);
         }
@@ -237,7 +238,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     }
 
     @Override
-    public void onFragmentInteraction(EventMessageDto eventMessageDto, String key) {
+    public void onFragmentInteraction(EventMessageDto eventMessageDto) {
 
     }
 }
