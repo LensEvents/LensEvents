@@ -53,13 +53,14 @@ public class MessageFragment extends Fragment {
         recyclerView.setAdapter(messageRecyclerViewAdapter);
 
         FloatingActionButton mAddMessage = (FloatingActionButton) view.findViewById(R.id.add_message);
-//        mAddMessage.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-//                transaction.replace(R.id.content_frament_to_replace, CreateMessageFragment.newInstance());
-//            }
-//        });
+        mAddMessage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.content_frament_to_replace, CreateMessageFragment.newInstance(key));
+                transaction.commit();
+            }
+        });
 
         return view;
     }

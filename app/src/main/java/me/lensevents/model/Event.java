@@ -1,7 +1,9 @@
 package me.lensevents.model;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import me.lensevents.dto.EventMessageDto;
 
@@ -44,6 +46,23 @@ public class Event implements Serializable {
         this.photo = photo;
         this.confirmationDate = confirmationDate;
         this.eventMessages = eventMessages;
+    }
+
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> res = new HashMap<>();
+        res.put("name", name);
+        res.put("date", date);
+        res.put("tags", tags);
+        res.put("description", description);
+        res.put("location", location);
+        res.put("isPrivate", isPrivate);
+        res.put("administrators", administrators);
+        res.put("assistants", assistants);
+        res.put("photo", photo);
+        res.put("confirmationDate", confirmationDate);
+        res.put("eventMessages", eventMessages);
+
+        return res;
     }
 
     public String getName() {

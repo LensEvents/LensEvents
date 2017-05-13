@@ -13,7 +13,6 @@ import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Logger;
 import com.google.firebase.database.Query;
 
 import java.util.ArrayList;
@@ -41,9 +40,11 @@ public class MessageRecyclerViewAdapter extends RecyclerView.Adapter<MessageRecy
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Event event = dataSnapshot.getValue(Event.class);
-                List<EventMessageDto> eventMessageDtos = event.getEventMessages();
-                for (EventMessageDto e : eventMessageDtos) {
-                    applyUserListener(e);
+                if (event.getEventMessages() != null) {
+                    List<EventMessageDto> eventMessageDtos = event.getEventMessages();
+                    for (EventMessageDto e : eventMessageDtos) {
+                        applyUserListener(e);
+                    }
                 }
             }
 
@@ -123,31 +124,33 @@ public class MessageRecyclerViewAdapter extends RecyclerView.Adapter<MessageRecy
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mItem = mMessages.get(position);
-        EventMessageDto eventMessage = mMessages.get(position);
-        User user = mUsers.get(position);
 
-        Bitmap image = null;
-        RequestForImageTask requestForImageTask = new RequestForImageTask();
-        try {
-            image = requestForImageTask.execute(user).get();
-        } catch (InterruptedException | ExecutionException e) {
-            Log.getStackTraceString(e);
-        }
-
-        holder.imageView.setImageBitmap(image);
-        holder.textView.setText(eventMessage.getText());
-        holder.dateView.setText(eventMessage.getDate());
-        holder.userNameView.setText(user.getDisplayName());
-
-        holder.mView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (null != mListener) {
-                    mListener.onFragmentInteraction(holder.mItem);
-                }
+        if (!mMessages.isEmpty()) {
+            holder.mItem = mMessages.get(position);
+            EventMessageDto eventMessage = mMessages.get(position);
+            User user = mUsers.get(position);
+            Bitmap image = null;
+            RequestForImageTask requestForImageTask = new RequestForImageTask();
+            try {
+                image = requestForImageTask.execute(user).get();
+            } catch (InterruptedException | ExecutionException e) {
+                Log.getStackTraceString(e);
             }
-        });
+
+            holder.imageView.setImageBitmap(image);
+            holder.textView.setText(eventMessage.getText());
+            holder.dateView.setText(eventMessage.getDate());
+            holder.userNameView.setText(user.getDisplayName());
+
+            holder.mView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (null != mListener) {
+                        mListener.onFragmentInteraction(holder.mItem);
+                    }
+                }
+            });
+        }
     }
 
     @Override
@@ -158,6 +161,7 @@ public class MessageRecyclerViewAdapter extends RecyclerView.Adapter<MessageRecy
     public class ViewHolder extends RecyclerView.ViewHolder {
         public ImageView imageView;
         public TextView textView;
+        public TextView noMessageText;
         public TextView userNameView;
         public TextView dateView;
         public final View mView;
@@ -170,6 +174,7 @@ public class MessageRecyclerViewAdapter extends RecyclerView.Adapter<MessageRecy
             textView = (TextView) itemView.findViewById(R.id.message_text);
             dateView = (TextView) itemView.findViewById(R.id.message_date);
             userNameView = (TextView) itemView.findViewById(R.id.message_user);
+            noMessageText = (TextView) itemView.findViewById(R.id.message_no_content);
         }
     }
 

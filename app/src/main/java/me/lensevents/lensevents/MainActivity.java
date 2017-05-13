@@ -34,7 +34,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         UserFragment.OnListFragmentInteractionListener, CreateGroupFragment.OnFragmentInteractionListener,
         EventFragment.OnFragmentInteractionListener, MultimediaFragment.OnListFragmentInteractionListener,
         EditGroupFragment.OnFragmentInteractionListener, TabCalendarFragment.OnFragmentInteractionListener,
-        EventDetailsFragment.OnFragmentInteractionListener, MessageFragment.OnFragmentInteractionListener {
+        EventDetailsFragment.OnFragmentInteractionListener, MessageFragment.OnFragmentInteractionListener,
+        CreateMessageFragment.OnFragmentInteractionListener {
 
     private static final int RC_SIGN_IN = 123;
     private HomeFragment homeFragment;
