@@ -315,6 +315,7 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
         Event event = mEvents.get(position);
         holder.mNameView.setText(event.getName());
 
+
         RequestForImageTask requestForImageTask = new RequestForImageTask();
         requestForImageTask.execute(event, holder.mImageView);
 

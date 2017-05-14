@@ -41,7 +41,7 @@
     <string name="logout">Cerrar sesión</string>
     <string name="my_events">Mis eventos</string>
     <string name="my_groups">Mis grupos</string>
-    <string name="date">Fecha (aaaa/mm/dd)</string>
+    <string name="date">Fecha (dd/mm/aaaa HH:mm)</string>
     <string name="location">Localización</string>
     <string name="date_label">Fecha</string>
     <string name="country">País</string>
@@ -50,4 +50,6 @@
     <string name="street">Calle</string>
     <string name="message_no_content">No hay ningún mensaje en el tablón</string>
     <string name="no_assistant">0 asistentes</string>
+    <string name="optional_group">Grupo (opcional)</string>
+    <string name="wrong_date_format">El formato de la fecha no es correcto</string>
 </resources>

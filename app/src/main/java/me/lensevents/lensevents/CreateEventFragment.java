@@ -7,35 +7,44 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.util.ArrayMap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.MultiAutoCompleteTextView;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.UploadTask;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import me.lensevents.dto.EventDto;
-import me.lensevents.model.Category;
+import me.lensevents.dto.GroupDto;
 import me.lensevents.model.Location;
 import me.lensevents.model.User;
+
+import static me.lensevents.lensevents.R.string.members;
 
 public class CreateEventFragment extends Fragment {
     public static final int REQUEST_CODE = 23;
@@ -43,11 +52,14 @@ public class CreateEventFragment extends Fragment {
 
     private List<String> users;
     private List<String> usersIds;
+    private List<String> groupsIds;
+    private List<String> groups;
     private EditText mEventName;
     private EditText mEventDate;
     private EditText mEventDescription;
     private MultiAutoCompleteTextView mEventAdministrators;
     private MultiAutoCompleteTextView mEventMembers;
+    private AutoCompleteTextView mGroup;
     private EditText mEventLocationCountry;
     private EditText mEventLocationProvince;
     private EditText mEventLocationCity;
@@ -80,8 +92,11 @@ public class CreateEventFragment extends Fragment {
         final View view = inflater.inflate(R.layout.fragment_create_event, container, false);
         users = new ArrayList<>();
         usersIds = new ArrayList<>();
+        groupsIds = new ArrayList<>();
+        groups = new ArrayList<>();
         mEventAdministrators = (MultiAutoCompleteTextView) view.findViewById(R.id.create_event_administrators);
         mEventMembers = (MultiAutoCompleteTextView) view.findViewById(R.id.create_event_members);
+        mGroup = (AutoCompleteTextView) view.findViewById(R.id.create_event_group);
 
         FirebaseDatabase.getInstance().getReference().child("Users").addChildEventListener(new ChildEventListener() {
             @Override
@@ -95,6 +110,53 @@ public class CreateEventFragment extends Fragment {
                 mEventAdministrators.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
                 mEventMembers.setAdapter(adapter);
                 mEventMembers.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+
+        FirebaseDatabase.getInstance().getReference().child("Groups").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                GroupDto group = dataSnapshot.getValue(GroupDto.class);
+                String key = dataSnapshot.getKey();
+                if (group.getAdministrators() != null) {
+                    for (String admin : group.getAdministrators()) {
+                        if (FirebaseAuth.getInstance().getCurrentUser().getUid().equals(admin)) {
+                            if (!groupsIds.contains(key)) {
+                                groups.add(group.getName());
+                                groupsIds.add(key);
+                            }
+                        }
+                    }
+                }
+                if (group.getMembers() != null) {
+                    for (String member : group.getMembers()) {
+                        if (FirebaseAuth.getInstance().getCurrentUser().getUid().equals(member)) {
+                            if (!groupsIds.contains(key)) {
+                                groups.add(group.getName());
+                                groupsIds.add(key);
+                            }
+                        }
+                    }
+                }
+                String[] arr = groups.toArray(new String[groups.size()]);
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_single_choice, arr);
+                mGroup.setAdapter(adapter);
             }
 
             @Override
@@ -131,7 +193,21 @@ public class CreateEventFragment extends Fragment {
                 if (photoAdded && photoName == null) {
                     Toast.makeText(getContext(), R.string.must_wait_to_photo, Toast.LENGTH_SHORT).show();
                 } else {
-                    createEvent();
+                    String stringDate = mEventDate.getText().toString();
+                    SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+                    boolean res;
+                    try {
+                        formatter.parse(stringDate);
+                        res = true;
+                    } catch (ParseException e) {
+                        res = false;
+                    }
+                    if (res) {
+                        createEvent();
+                    } else {
+                        Toast.makeText(getContext(), R.string.wrong_date_format, Toast.LENGTH_SHORT).show();
+                    }
+
                 }
 
             }
@@ -170,7 +246,7 @@ public class CreateEventFragment extends Fragment {
     }
 
     private void createEvent() {
-        EventDto eventDto = new EventDto();
+        final EventDto eventDto = new EventDto();
 
         List<String> assistants = new ArrayList<>();
         List<String> administrators = new ArrayList<>();
@@ -219,11 +295,40 @@ public class CreateEventFragment extends Fragment {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Events");
         databaseReference.push().setValue(eventDto);
 
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        EventFragment eventFragment = new EventFragment();
-        transaction.replace(R.id.content_frament_to_replace, eventFragment);
-        transaction.commit();
+        int groupIndex = groups.indexOf(mGroup.getText().toString());
+        if (groupIndex != -1) {
+            final String key = groupsIds.get(groupIndex);
+            final DatabaseReference query = FirebaseDatabase.getInstance().getReference("Groups").child(key);
+            query.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    GroupDto groupDto = dataSnapshot.getValue(GroupDto.class);
+                    List<String> events = groupDto.getEvents();
+                    if (events == null) {
+                        events = new ArrayList<String>();
+                    }
+                    events.add(key);
+                    Map<String, Object> map = new ArrayMap<>();
+                    map.put("events", events);
+                    query.updateChildren(map);
 
+                    FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                    EventFragment eventFragment = new EventFragment();
+                    transaction.replace(R.id.content_frament_to_replace, eventFragment);
+                    transaction.commit();
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        } else {
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            EventFragment eventFragment = new EventFragment();
+            transaction.replace(R.id.content_frament_to_replace, eventFragment);
+            transaction.commit();
+        }
     }
 
     public void onButtonPressed(Uri uri) {

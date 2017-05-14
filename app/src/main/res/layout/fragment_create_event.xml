@@ -58,7 +58,7 @@
                         android:layout_weight="1"
                         android:ems="10"
                         android:hint="@string/date"
-                        android:inputType="date" />
+                        android:inputType="datetime" />
                 </android.support.design.widget.TextInputLayout>
 
             </LinearLayout>
@@ -104,6 +104,21 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/members_hint"
+                    android:textColorLink="@color/authui_colorPrimary" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingEnd="16dp"
+                android:paddingStart="16dp">
+
+                <AutoCompleteTextView
+                    android:id="@+id/create_event_group"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/optional_group"
                     android:textColorLink="@color/authui_colorPrimary" />
 
             </android.support.design.widget.TextInputLayout>
