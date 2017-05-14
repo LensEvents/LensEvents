@@ -21,6 +21,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -113,11 +114,8 @@ public class CreateMessageFragment extends Fragment {
 
     private void createMessage() {
         EventMessageDto eventMessageDto = new EventMessageDto();
-        DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(getContext());
-        DateFormat timeFormat = android.text.format.DateFormat.getTimeFormat(getContext());
-        String date = dateFormat.format(new Date());
-        String hour = timeFormat.format(new Date());
-        eventMessageDto.setDate(date + " " + hour);
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+        eventMessageDto.setDate(formatter.format(new Date()));
         eventMessageDto.setSender(firebaseUser.getUid());
         eventMessageDto.setText(mMessageText.getText().toString());
         if (event.getEventMessages() != null) {
