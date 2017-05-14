@@ -41,15 +41,15 @@
         <item>Negocios</item>
     </string-array>
     <string-array name="images">
-        <item>ic_dashboard_black_24dp</item>
-        <item>ic_dashboard_black_24dp</item>
-        <item>ic_dashboard_black_24dp</item>
-        <item>ic_dashboard_black_24dp</item>
-        <item>ic_dashboard_black_24dp</item>
-        <item>ic_dashboard_black_24dp</item>
-        <item>ic_dashboard_black_24dp</item>
-        <item>ic_dashboard_black_24dp</item>
-        <item>ic_dashboard_black_24dp</item>
+        <item>demostration</item>
+        <item>trees</item>
+        <item>laptop</item>
+        <item>family</item>
+        <item>teacup</item>
+        <item>football</item>
+        <item>learning</item>
+        <item>picture</item>
+        <item>cutlery</item>
         <item>ic_dashboard_black_24dp</item>
         <item>ic_dashboard_black_24dp</item>
         <item>ic_dashboard_black_24dp</item>
