@@ -214,7 +214,7 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
             Event event = dataSnapshot.getValue(Event.class);
             boolean isFuture = false;
             if (key != null || myEvents != null) {
-                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
                 Date eventDate = null;
                 try {
                     eventDate = formatter.parse(event.getDate());
@@ -249,7 +249,7 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
                 if (index != -1) {
                     mEvents.set(index, event);
                     notifyItemChanged(index);
-                    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                    SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
                     Date eventDate = null;
                     try {
                         eventDate = formatter.parse(event.getDate());
@@ -288,7 +288,7 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
 
     public Boolean isFuture(Event event) {
         Boolean isFuture = false;
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
         Date eventDate = null;
         try {
             eventDate = formatter.parse(event.getDate());
