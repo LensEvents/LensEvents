@@ -50,14 +50,14 @@
         <item>ic_dashboard_black_24dp</item>
         <item>ic_dashboard_black_24dp</item>
         <item>ic_dashboard_black_24dp</item>
-        <item>ic_dashboard_black_24dp</item>
-        <item>ic_dashboard_black_24dp</item>
-        <item>ic_dashboard_black_24dp</item>
-        <item>ic_dashboard_black_24dp</item>
-        <item>ic_dashboard_black_24dp</item>
-        <item>ic_dashboard_black_24dp</item>
-        <item>ic_dashboard_black_24dp</item>
-        <item>ic_dashboard_black_24dp</item>
-        <item>ic_dashboard_black_24dp</item>
+        <item>language</item>
+        <item>music</item>
+        <item>cinema</item>
+        <item>games</item>
+        <item>art</item>
+        <item>hobbies</item>
+        <item>fashion</item>
+        <item>social</item>
+        <item>business</item>
     </string-array>
 </resources>
