@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         eventFragment = new EventFragment();
         tabCalendarFragment = new TabCalendarFragment();
 
-        transaction.replace(R.id.content_frament_to_replace, homeFragment);
+        transaction.replace(R.id.content_frament_to_replace, eventFragment);
         transaction.commit();
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
@@ -150,10 +150,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         switch (item.getItemId()) {
-            case R.id.navigation_home:
-                transaction.replace(R.id.content_frament_to_replace, homeFragment);
-                transaction.commit();
-                return true;
             case R.id.navigation_events:
                 transaction.replace(R.id.content_frament_to_replace, eventFragment);
                 transaction.commit();
