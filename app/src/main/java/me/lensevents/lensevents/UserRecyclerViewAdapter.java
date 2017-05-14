@@ -25,6 +25,7 @@ import java.util.concurrent.ExecutionException;
 
 import me.lensevents.dto.GroupDto;
 import me.lensevents.lensevents.UserFragment.OnListFragmentInteractionListener;
+import me.lensevents.model.Event;
 import me.lensevents.model.Group;
 import me.lensevents.model.User;
 
@@ -33,17 +34,56 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
     private final OnListFragmentInteractionListener mListener;
     private String key;
     private String mode;
+    private Boolean isGroup;
 
     private List<String> mUsersIds = new ArrayList<>();
     private List<User> mUsers = new ArrayList<>();
 
-    public UserRecyclerViewAdapter(final String key, final String mode, OnListFragmentInteractionListener listener) {
+    public UserRecyclerViewAdapter(final String key, final String mode, final Boolean isGroup, OnListFragmentInteractionListener listener) {
         mListener = listener;
         this.key = key;
         this.mode = mode;
+        this.isGroup = isGroup;
 
-        requestForGroup();
+        if (isGroup) {
+            requestForGroup();
+        } else {
+            requestForEvent();
+        }
 
+    }
+
+    private void requestForEvent() {
+        FirebaseDatabase.getInstance().getReference("Events").orderByKey().equalTo(key)
+                .addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                applyEventUserListener(dataSnapshot);
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                mUsers.clear();
+                mUsersIds.clear();
+                notifyDataSetChanged();
+                applyEventUserListener(dataSnapshot);
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     public void requestForGroup() {
@@ -77,6 +117,25 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
 
                     }
                 });
+    }
+
+    private void applyEventUserListener(DataSnapshot dataSnapshot) {
+        Event event = dataSnapshot.getValue(Event.class);
+        Query query;
+        if (mode == "administrators") {
+            for (String uid : event.getAdministrators()) {
+                query = FirebaseDatabase.getInstance().getReference().child("Users").orderByChild("uid").equalTo(uid);
+                query.addChildEventListener(userEventListener);
+            }
+        } else if (mode == "members") {
+            if (event.getAssistants() == null) {
+                event.setAssistants(new ArrayList<String>());
+            }
+            for (String uid : event.getAssistants()) {
+                query = FirebaseDatabase.getInstance().getReference().child("Users").orderByChild("uid").equalTo(uid);
+                query.addChildEventListener(userEventListener);
+            }
+        }
     }
 
     public void applyUserListener(DataSnapshot dataSnapshot) {
@@ -144,12 +203,12 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mUsers.get(position);
-        User group = mUsers.get(position);
+        User user = mUsers.get(position);
 
         Bitmap image = null;
         RequestForImageTask requestForImageTask = new RequestForImageTask();
         try {
-            image = requestForImageTask.execute(group).get();
+            image = requestForImageTask.execute(user).get();
         } catch (InterruptedException | ExecutionException e) {
             Log.getStackTraceString(e);
         }

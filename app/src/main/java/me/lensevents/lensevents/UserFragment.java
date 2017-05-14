@@ -9,9 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-
 import me.lensevents.dto.GroupDto;
 import me.lensevents.model.User;
 
@@ -21,6 +18,9 @@ public class UserFragment extends Fragment {
     public static String MODE = "mode";
     public static String GROUP = "group";
     public static String KEY = "key";
+    public static String ISGROUP = "isGroup";
+
+    private Boolean isGroup;
     private String mode;
     private String key;
     private GroupDto groupDto;
@@ -37,6 +37,17 @@ public class UserFragment extends Fragment {
         Bundle args = new Bundle();
         args.putString(MODE, mode);
         args.putSerializable(GROUP, groupDto);
+        args.putBoolean(ISGROUP, true);
+        args.putString(KEY, key);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    public static UserFragment newInstance(String mode, Boolean isGroup, String key) {
+        UserFragment fragment = new UserFragment();
+        Bundle args = new Bundle();
+        args.putString(MODE, mode);
+        args.putBoolean(ISGROUP, isGroup);
         args.putString(KEY, key);
         fragment.setArguments(args);
         return fragment;
@@ -50,6 +61,7 @@ public class UserFragment extends Fragment {
             mode = getArguments().getString(MODE);
             key = getArguments().getString(KEY);
             groupDto = (GroupDto) getArguments().getSerializable(GROUP);
+            isGroup = getArguments().getBoolean(ISGROUP);
         }
     }
 
@@ -64,7 +76,13 @@ public class UserFragment extends Fragment {
             RecyclerView recyclerView = (RecyclerView) view;
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
 
-            recyclerView.setAdapter(new UserRecyclerViewAdapter(key, mode, mListener));
+            if (isGroup) {
+                recyclerView.setAdapter(new UserRecyclerViewAdapter(key, mode, true, mListener));
+            } else {
+                recyclerView.setAdapter(new UserRecyclerViewAdapter(key, mode, false, mListener));
+            }
+
+
         }
         return view;
     }
