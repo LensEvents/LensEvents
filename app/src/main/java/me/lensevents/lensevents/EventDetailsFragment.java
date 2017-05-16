@@ -78,6 +78,8 @@ public class EventDetailsFragment extends Fragment {
         FloatingActionButton deleteButton = (FloatingActionButton) view.findViewById(R.id.delete_button);
         TextView eventLocation = (TextView) view.findViewById(R.id.event_location);
         TextView eventDate = (TextView) view.findViewById(R.id.event_date);
+        final TextView eventConfirmationDate = (TextView) view.findViewById(R.id.event_confirmation_date);
+        final ImageView eventConfirmation = (ImageView) view.findViewById(R.id.imageView4);
         TextView eventDescription = (TextView) view.findViewById(R.id.event_description);
         final TextView eventAssistants = (TextView) view.findViewById(R.id.event_assistants_number);
         final Button viewAssistantsButton = (Button) view.findViewById(R.id.event_viewAssistants_button);
@@ -93,6 +95,11 @@ public class EventDetailsFragment extends Fragment {
                 + event.getLocation().getProvince() + ", " + event.getLocation().getCity() + ", "
                 + event.getLocation().getStreet());
         eventDate.setText(event.getDate());
+        if (event.getConfirmationDate() != null) {
+            eventConfirmationDate.setVisibility(View.VISIBLE);
+            eventConfirmation.setVisibility(View.VISIBLE);
+            eventConfirmationDate.setText(event.getConfirmationDate());
+        }
         eventDescription.setText(event.getDescription());
         if (event.getAssistants() != null) {
             eventAssistants.setText(event.getAssistants().size() + " asistentes");
@@ -154,6 +161,9 @@ public class EventDetailsFragment extends Fragment {
                             }
                         });
                         confirmButton.setVisibility(View.GONE);
+                        eventConfirmationDate.setVisibility(View.VISIBLE);
+                        eventConfirmation.setVisibility(View.VISIBLE);
+                        eventConfirmationDate.setText(formatter.format(new Date()));
                     }
                 });
             }
