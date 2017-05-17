@@ -69,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                                 }
                             });
                 }
+                initFragments();
             }
         }
         if (requestCode == CreateGroupFragment.REQUEST_CODE) {
@@ -115,16 +116,14 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
 
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        homeFragment = new HomeFragment();
-        categoryFragment = new CategoryFragment();
-        eventFragment = new EventFragment();
-        tabCalendarFragment = new TabCalendarFragment();
+        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        navigation.setOnNavigationItemSelectedListener(this);
 
-        transaction.replace(R.id.content_frament_to_replace, eventFragment);
-        transaction.commit();
+        Boolean fromLogout = getIntent().getBooleanExtra("fromLogout", true);
+        if (!fromLogout) {
+            FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+        }
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
         if (auth.getCurrentUser() == null) {
@@ -136,10 +135,20 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                                     new AuthUI.IdpConfig.Builder(AuthUI.FACEBOOK_PROVIDER).build()))
                             .build(),
                     RC_SIGN_IN);
+        } else {
+            initFragments();
         }
+    }
 
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(this);
+    public void initFragments() {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        homeFragment = new HomeFragment();
+        categoryFragment = new CategoryFragment();
+        eventFragment = new EventFragment();
+        tabCalendarFragment = new TabCalendarFragment();
+
+        transaction.replace(R.id.content_frament_to_replace, eventFragment);
+        transaction.commit();
     }
 
     @Override
@@ -225,6 +234,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             FirebaseAuth.getInstance().signOut();
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.putExtra("fromLogout", true);
             finish();
             startActivity(intent);
             return true;
