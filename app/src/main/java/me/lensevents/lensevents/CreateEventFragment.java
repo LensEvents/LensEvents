@@ -293,7 +293,8 @@ public class CreateEventFragment extends Fragment {
         eventDto.setLocation(location);
 
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Events");
-        databaseReference.push().setValue(eventDto);
+        final String eventKey = databaseReference.push().getKey();
+        databaseReference.child(eventKey).setValue(eventDto);
 
         int groupIndex = groups.indexOf(mGroup.getText().toString());
         if (groupIndex != -1) {
@@ -307,7 +308,7 @@ public class CreateEventFragment extends Fragment {
                     if (events == null) {
                         events = new ArrayList<String>();
                     }
-                    events.add(key);
+                    events.add(eventKey);
                     Map<String, Object> map = new ArrayMap<>();
                     map.put("events", events);
                     query.updateChildren(map);

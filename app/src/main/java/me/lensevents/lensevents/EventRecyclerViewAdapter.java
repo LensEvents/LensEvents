@@ -49,9 +49,9 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
             mDatabaseReference = FirebaseDatabase.getInstance().getReference("Events").orderByChild("date");
             mDatabaseReference.addChildEventListener(childEventListener);
         } else {
-            if (myEvents != null && key != null) {
+            if (myEvents != null && myEvents==true && key != null) {
                 requestForGroupAndPrincipal();
-            } else if (myEvents != null) {
+            } else if (myEvents != null && myEvents==true) {
                 requestForPrincipal();
             } else if (key != null) {
                 requestForGroup();
@@ -191,8 +191,8 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
     public void applyUserListener(DataSnapshot dataSnapshot) {
         GroupDto groupDto = dataSnapshot.getValue(GroupDto.class);
         if (groupDto.getEvents() != null) {
-            for (String key : groupDto.getEvents()) {
-                mDatabaseReference = FirebaseDatabase.getInstance().getReference().child("Events").orderByKey().equalTo(key);
+            for (String auxKey : groupDto.getEvents()) {
+                mDatabaseReference = FirebaseDatabase.getInstance().getReference().child("Events").orderByKey().equalTo(auxKey);
                 mDatabaseReference.addChildEventListener(childEventListener);
             }
         }
