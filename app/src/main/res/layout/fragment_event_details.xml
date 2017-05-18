@@ -31,13 +31,14 @@
                 <TextView
                     android:id="@+id/event_name"
                     android:layout_width="303dp"
-                    android:layout_height="64dp"
+                    android:layout_height="wrap_content"
                     android:layout_weight="0.80"
                     android:paddingBottom="@dimen/md_keylines"
                     android:paddingEnd="@dimen/md_keylines"
                     android:paddingStart="@dimen/md_keylines"
                     android:paddingTop="@dimen/md_keylines"
                     android:text="Default"
+                    android:inputType="textMultiLine"
                     android:textAppearance="@style/TextAppearance.AppCompat.Title"
                     android:textColor="@color/colorPrimary" />
 
