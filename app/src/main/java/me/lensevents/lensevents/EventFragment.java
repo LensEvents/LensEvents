@@ -74,7 +74,8 @@ public class EventFragment extends Fragment {
         mAddGroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                MainActivity mainActivity = (MainActivity) getActivity();
+                FragmentTransaction transaction = mainActivity.getSupportFragmentManager().beginTransaction();
                 transaction.replace(R.id.content_frament_to_replace, CreateEventFragment.newInstance(), "createEventFragment");
                 transaction.addToBackStack(null);
                 transaction.commit();
