@@ -1,0 +1,178 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="me.lensevents.lensevents.GroupDetailsFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/user_image"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/card_image_height"
+                android:scaleType="centerCrop"
+                tools:src="@drawable/default_image" />
+
+            <TextView
+                android:id="@+id/group_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/md_keylines"
+                android:paddingEnd="@dimen/md_keylines"
+                android:paddingStart="@dimen/md_keylines"
+                android:paddingTop="@dimen/md_keylines"
+                android:text="Default"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                android:textColor="@color/colorPrimary" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/group_editGroup"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/edit_group"
+                    android:textColor="@android:color/holo_orange_dark"
+                    android:visibility="gone" />
+
+
+                <Button
+                    android:id="@+id/group_deleteGroup"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/delete_group"
+                    android:textColor="@android:color/holo_red_dark"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/group_category"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="8dp"
+                android:paddingEnd="@dimen/md_keylines"
+                android:paddingStart="@dimen/md_keylines"
+                android:paddingTop="8dp"
+                android:text="Default" />
+
+
+            <TextView
+                android:id="@+id/group_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="8dp"
+                android:paddingEnd="@dimen/md_keylines"
+                android:paddingStart="@dimen/md_keylines"
+                android:paddingTop="8dp"
+                android:text="Default" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/group_number_users"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="8dp"
+                    android:paddingEnd="@dimen/md_keylines"
+                    android:paddingStart="@dimen/md_keylines"
+                    android:paddingTop="8dp"
+                    android:text="Default" />
+
+                <Button
+                    android:id="@+id/group_viewUsers_button"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/group_view_users"
+                    android:textColor="?attr/colorPrimary" />
+
+                <Button
+                    android:id="@+id/group_join"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/group_join"
+                    android:textColor="?attr/colorPrimary" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/group_access_code"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="8dp"
+                android:paddingEnd="@dimen/md_keylines"
+                android:paddingStart="@dimen/md_keylines"
+                android:paddingTop="8dp"
+                android:text="Default"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/group_view_media"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/group_view_media"
+                android:textColor="?attr/colorPrimary" />
+
+            <TextView
+                android:id="@+id/group_administrators_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/md_keylines"
+                android:paddingEnd="@dimen/md_keylines"
+                android:paddingStart="@dimen/md_keylines"
+                android:paddingTop="@dimen/md_keylines"
+                android:text="@string/administrators"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                android:textColor="@color/colorPrimary"
+                android:textSize="16sp"
+                android:visibility="gone" />
+
+            <include
+                android:id="@+id/group_admins"
+                layout="@layout/fragment_user_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/group_events_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/md_keylines"
+                android:paddingEnd="@dimen/md_keylines"
+                android:paddingStart="@dimen/md_keylines"
+                android:paddingTop="@dimen/md_keylines"
+                android:text="@string/next_events"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                android:textColor="@color/colorPrimary"
+                android:textSize="16sp" />
+
+            <include
+                android:id="@+id/group_events"
+                layout="@layout/fragment_event_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+        </LinearLayout>
+    </ScrollView>
+</FrameLayout>

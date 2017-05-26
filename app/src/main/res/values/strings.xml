@@ -1,0 +1,55 @@
+<resources>
+    <string name="app_name">LensEvents</string>
+    <string name="title_activity_main">LensEvents</string>
+    <string name="title_home">Inicio</string>
+    <string name="title_events">Eventos</string>
+    <string name="title_groups">Grupos</string>
+    <string name="title_calendar">Calendario</string>
+    <string name="twitter_consumer_key" translatable="false">hIBqoPIAiMNg1LpvSiEDwzGaC</string>
+    <string name="twitter_consumer_secret" translatable="false">uUW7osdi01DG64TtCWyQY6hLKrmvB8VJ7n3gLf7j3d4ToLuHIz</string>
+    <string name="facebook_application_id" translatable="false">1779580009022377</string>
+    <string name="facebook_login_protocol_scheme" translatable="false">fb1779580009022377</string>
+
+    <string name="members">miembros</string>
+    <string name="group_view_media">Ver información multimedia</string>
+    <string name="group_view_users">Ver usuarios</string>
+    <string name="event_view_assistants">Ver asistentes</string>
+    <string name="event_view_messages">Ver tablón de mensajes</string>
+    <string name="administrators">Administradores</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="members_hint">Miembros</string>
+    <string name="description">Descripción</string>
+    <string name="name">Nombre</string>
+    <string name="category">Categoría</string>
+    <string name="public_group">Público</string>
+    <string name="private_group">Privado</string>
+    <string name="create">Crear</string>
+    <string name="write">Escribir mensaje</string>
+    <string name="message">Mensaje</string>
+    <string name="next_events">Próximos eventos</string>
+    <string name="group_join">Unirse</string>
+    <string name="group_add_photo">Añadir foto</string>
+    <string name="must_wait_to_photo">Por favor, espera a que la foto se suba</string>
+    <string name="group_dissociate">Quitarse</string>
+    <string name="delete_group">Borrar grupo</string>
+    <string name="cannot_delete_group">No se puede borrar un grupo que tiene miembros</string>
+    <string name="edit_group">Editar grupo</string>
+    <string name="group_edit_photo">Editar foto</string>
+    <string name="edit_group_button">Editar</string>
+    <string name="logout">Cerrar sesión</string>
+    <string name="my_events">Mis eventos</string>
+    <string name="my_groups">Mis grupos</string>
+    <string name="date">Fecha (dd-mm-aaaa HH:mm)</string>
+    <string name="location">Localización</string>
+    <string name="date_label">Fecha</string>
+    <string name="country">País</string>
+    <string name="province">Provincia</string>
+    <string name="city">Ciudad</string>
+    <string name="street">Calle</string>
+    <string name="message_no_content">No hay ningún mensaje en el tablón</string>
+    <string name="no_assistant">0 asistentes</string>
+    <string name="optional_group">Grupo (opcional)</string>
+    <string name="wrong_date_format">El formato de la fecha no es correcto</string>
+</resources>

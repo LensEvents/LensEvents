@@ -1,0 +1,63 @@
+{
+  "project_info": {
+    "project_number": "850154438540",
+    "firebase_url": "https://lensevents-83f8c.firebaseio.com",
+    "project_id": "lensevents-83f8c",
+    "storage_bucket": "lensevents-83f8c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:850154438540:android:60fc6021c9cf26eb",
+        "android_client_info": {
+          "package_name": "me.lensevents.lensevents"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "850154438540-92o07ugsb7rt4c3ca7k4pi8i9nlf08h5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "me.lensevents.lensevents",
+            "certificate_hash": "708f6b9e283b22431f1ffe282ef8d1ccee2a7a47"
+          }
+        },
+        {
+          "client_id": "850154438540-t8gtbks1su494qrg4n3n66tbbq5orq2j.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "me.lensevents.lensevents",
+            "certificate_hash": "505beb2c2da67d7b8b7d33abaa4be3854ad96e16"
+          }
+        },
+        {
+          "client_id": "850154438540-aio3iml8oc1mv43gcegqiuksdiopk52j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCeMpwZx2qxU0k2e-oyhiW6BGOz7E7Y448"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "850154438540-aio3iml8oc1mv43gcegqiuksdiopk52j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

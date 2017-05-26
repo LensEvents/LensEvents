@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="categories">
+        <item>MOVIMIENTOS</item>
+        <item>NATURALEZA_Y_AVENTURA</item>
+        <item>TECNOLOGÍA</item>
+        <item>FAMILIA</item>
+        <item>SALUD_Y_BIENESTAR</item>
+        <item>DEPORTES</item>
+        <item>APRENDIZAJE</item>
+        <item>FOTOGRAFIA</item>
+        <item>COMIDA_Y_BEBIDA</item>
+        <item>IDIOMAS_Y_CULTURA</item>
+        <item>MÚSICA</item>
+        <item>CINE_Y_SERIES</item>
+        <item>JUEGOS</item>
+        <item>ARTE</item>
+        <item>AFICIONES</item>
+        <item>MODA_Y_BELLEZA</item>
+        <item>VIDA_SOCIAL</item>
+        <item>NEGOCIOS</item>
+    </string-array>
+    <string-array name="categoriesAsString">
+        <item>Movimientos</item>
+        <item>Naturaleza y aventura</item>
+        <item>Tecnología</item>
+        <item>Familia</item>
+        <item>Salud y bienestar</item>
+        <item>Deportes</item>
+        <item>Aprendizaje</item>
+        <item>Fotografía</item>
+        <item>Comida y bebida</item>
+        <item>Idiomas y cultura</item>
+        <item>Música</item>
+        <item>Cine y series</item>
+        <item>Juegos</item>
+        <item>Arte</item>
+        <item>Aficiones</item>
+        <item>Moda y belleza</item>
+        <item>Vida social</item>
+        <item>Negocios</item>
+    </string-array>
+    <string-array name="images">
+        <item>demostration</item>
+        <item>trees</item>
+        <item>laptop</item>
+        <item>family</item>
+        <item>teacup</item>
+        <item>football</item>
+        <item>learning</item>
+        <item>picture</item>
+        <item>cutlery</item>
+        <item>language</item>
+        <item>music</item>
+        <item>cinema</item>
+        <item>games</item>
+        <item>art</item>
+        <item>hobbies</item>
+        <item>fashion</item>
+        <item>social</item>
+        <item>business</item>
+    </string-array>
+</resources>

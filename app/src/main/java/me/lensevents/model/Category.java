@@ -1,0 +1,22 @@
+package me.lensevents.model;
+
+public enum Category {
+    MOVIMIENTOS,
+    NATURALEZA_Y_AVENTURA,
+    TECNOLOGÍA,
+    FAMILIA,
+    SALUD_Y_BIENESTAR,
+    DEPORTES,
+    APRENDIZAJE,
+    FOTOGRAFIA,
+    COMIDA_Y_BEBIDA,
+    IDIOMAS_Y_CULTURA,
+    MÚSICA,
+    CINE_Y_SERIES,
+    JUEGOS,
+    ARTE,
+    AFICIONES,
+    MODA_Y_BELLEZA,
+    VIDA_SOCIAL,
+    NEGOCIOS
+}
